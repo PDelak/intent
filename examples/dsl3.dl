@@ -1,0 +1,48 @@
+typeset basic = [
+  type main = map*;
+  type map =   key ':' value ;
+  type key =  "[a-z0-9]+";
+  type value = "[0-9]+";
+]
+
+match(main) 
+{
+  |=> {
+    #include <iostream>
+    int main() {
+    std::unordered_map<std::string, size_t> values;
+	    $0
+    return 0;
+    }
+  }
+}
+
+match(map)
+{
+  |=> {
+    values.insert(std::make_pair($0,$2));
+  }
+}
+
+match(key)
+{
+  |=> {
+    $0.value
+  }
+}
+
+match(value)
+{
+  |=> {
+    $0.value
+  }
+}
+
+delak : 1
+bolek : 2
+delak : 1
+bolek : 2
+delak : 1
+bolek : 2
+delak : 1
+bolek : 2

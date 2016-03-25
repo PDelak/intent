@@ -1,0 +1,22 @@
+typeset basic = [
+  type main = s*;
+  type s = "[:#,\-\.a-zA-Z0-9]*";
+]
+
+let @counter = 0
+
+match(main) {
+  |=> {
+    $0
+    @print(@counter)
+  }
+}
+
+match(s) {
+  |=> {
+     @print("$0.value ")
+     @counter = @counter + 1
+  }
+}
+
+hello world intent is the best language for doing dsl stuff

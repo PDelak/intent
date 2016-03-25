@@ -1,0 +1,10 @@
+function @foo(@param : int, @param2 : int) : bool
+{
+ 
+  @print (@param)
+  @param = 2 
+  return true
+
+}
+
+@foo(1 1)

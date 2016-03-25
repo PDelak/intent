@@ -1,0 +1,42 @@
+typeset basic = [
+  type main = p*;
+  type p = a | b;
+  type a = 'program';
+  type b = 'hello';
+]
+
+match(main)
+{
+  | => { 
+        @print ("main")
+        $0
+	
+  }
+}
+
+match(p)
+{
+  | 0 => {
+        @print("p0")
+        $0
+  }
+  | 1 => {
+        @print("p1")
+        $0
+  }
+}
+
+match (a) 
+{
+  | => { @print ("a 0") }
+}
+
+match (b) 
+{
+  | => { @print ("b 0") }
+}
+
+
+@print("hello")
+
+program hello

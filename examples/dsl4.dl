@@ -1,0 +1,30 @@
+typeset basic = [
+  type main = s*;
+  type s = 'a' | 'b' | 'c';
+]
+
+match(main)
+{
+  |=> {
+    $0
+  }
+}
+
+match(s) 
+{
+  | 0 => {
+        @print("$0.value")
+        let @x = "$0.value"
+        if ( @x == "a") @print("hello")
+  }
+  | 1 => {
+        $0.value
+        @print("$0.value")
+  }
+  | 2 => {
+        $0.value
+        @print("$0.value")
+  }
+}
+
+aaaabbbaccc 

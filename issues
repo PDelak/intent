@@ -1,0 +1,8 @@
+types are not unique
+for instance i introduce number which already exists in intent typeset
+
+matchers for grouping do not work?
+
+import keyword for importing already existing modules would be helpfull
+
+dynamic types and basic types are not composable

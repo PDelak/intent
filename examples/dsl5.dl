@@ -1,0 +1,48 @@
+typeset basic = [
+  type main = 'program' '{' p* '}';
+  type p = 'calc' '->' s;
+  type s = Mynumber op Mynumber;
+  type op = '+' | '-' | '*' | '/';
+  type Mynumber = "[0-9]*";
+]
+
+match(main) {
+  |=> {
+    let @index = 0
+    $2
+    @print("===============")
+    @print(@index)
+  } 
+}
+
+match(p) {
+  |=> {
+    let @op = "$0.value "
+    @print (@op)
+    @print ( $2 )
+    @index = @index + 1
+  }
+}
+
+match(s)
+{
+  |=> {
+     $0 $1.value $2
+  }
+}
+
+match(Mynumber)
+{
+  |=> {
+    $0.value
+  }
+}
+
+program
+{
+	calc -> 44+5 
+	calc -> 55+5
+	calc -> 55-3
+	calc -> 55/5
+	calc -> 5*5
+}

@@ -1,0 +1,33 @@
+typeset basic = [
+  type main = struct*;
+  type struct = id "[a-z]*";
+  type id = 'id' ;
+]
+
+match(main)
+{
+  |=> {
+    std::cout << "main" << std::endl;
+    $0
+  }
+}
+
+match(struct)
+{
+  |=> {
+    std::cout << "struct" << std::endl;
+    $0
+  }
+}
+
+match(id)
+{
+  |=> {
+    std::cout << "id" << std::endl;
+  }
+}
+
+
+id aa
+id a
+id b

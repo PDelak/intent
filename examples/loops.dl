@@ -1,0 +1,15 @@
+let @i = 5
+let @step = 1
+let @x = 1
+let @y = 1
+for(@x = 1, 5, 1) {
+	for( @y = 1, @i, @step) {
+          @print (@y)
+	}
+
+}
+
+while (@i < 10) { 
+  @print ("hello")
+  @i = @i + 1
+}

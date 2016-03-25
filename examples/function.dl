@@ -1,0 +1,25 @@
+function @foo(@param : int) : int 
+{
+  @print (@param)
+
+  return 5
+}
+
+function @foo2(@param : int, @param2: bool) : bool 
+{
+  @print (@param)
+  @print (@param2)
+  return true
+}
+
+function @foo3(@param : int, @param2: bool, @param3 : string) : string
+{
+  @print (@param)
+  @print (@param2)
+  @print (@param3)
+  return "hello"
+}
+
+@foo(1)
+@foo2(2 true)
+@foo3(3 true "hello")

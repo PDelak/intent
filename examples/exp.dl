@@ -1,0 +1,19 @@
+let @x = 5
+let @y = 3
+let @z = @x+@y
+
+@print (@z)
+
+function @str()
+{
+  return "world"
+}
+
+function @foo(@p : int , @p2 : int)
+{
+  @print(@p)
+  @print(@p2)
+}
+
+
+@foo("str" 3+3)

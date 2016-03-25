@@ -1,0 +1,23 @@
+typeset oo = [
+  type main = s*;
+  type s = i_class ';' | i_expr ';' ;
+  type i_class = 'class' i_id '{' i_field* '}' ;
+  type i_id = "[a-zA-z][a-zA-z0-9_]*";
+  type i_digit = "[0-9][0-9]*";
+  type i_type_id = 'int' | 'float';
+  type i_field = i_type_id i_id ';';
+  type i_expr = i_expr '=' i_expr  
+            | i_expr '.' i_expr
+            | i_literal;
+  type i_literal = i_id | i_digit;
+  
+]
+
+class x {};
+
+class test {
+  int x;
+};
+
+x = 0;
+test.x = 1;

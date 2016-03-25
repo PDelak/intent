@@ -1,0 +1,26 @@
+typeset basic = 
+[
+  type main = s*;
+  type s = (a b);
+  type a = 'a';
+  type b = 'b';
+
+]
+
+match(main)
+{
+  |=> {
+     $0     
+  }
+}
+
+match(s) 
+{
+  |=> {    
+   for( @i = 1, 5, 1) {
+   	@print("$0.value ")
+   }
+  }
+}
+
+ababab
