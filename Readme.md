@@ -5,13 +5,13 @@ Intent is a simple programming language which aims simplicity of domain specific
 
 # Hello world
 
-@print "hello world"
+	@print "hello world"
 
 # Ordinary stuff
 
 Variables declaration
 
-let @x = 1
+	let @x = 1
 
 * all identifiers starts with @ sign
 
