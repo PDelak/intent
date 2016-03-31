@@ -3,11 +3,11 @@ intent
 
 Intent is a simple programming language which aims simplicity of domain specific languages creation.
 
-# Hello world
+### Hello world
 
 	@print "hello world"
 
-# Ordinary stuff
+### Ordinary stuff
 
 Variables declaration
 
@@ -15,8 +15,12 @@ Variables declaration
 
 * all identifiers starts with @ sign
 
-@x type will be inferred as int
+@x type will be inferred as int and is a shortcut for following declaration
+
+	let @x : int = 1
 
 Types : string, int, bool, table
+
+
 
 
