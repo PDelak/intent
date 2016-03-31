@@ -31,7 +31,6 @@ List of currently supported types :
 
 * `let`
 
-
- 	let @x = 1
+		let @x = 1
 
 
