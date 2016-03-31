@@ -33,4 +33,15 @@ List of currently supported types :
 
 		let @x = 1
 
+* `if statement`
+
+		if (@x == 1) 
+		{
+		} 
+		else if(@x == 2) 
+		{
+		}
+		else 
+		{
+		}
 
