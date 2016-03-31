@@ -27,5 +27,10 @@ List of currently supported types :
  * `bool` 
  * `table`
 
+### Builtin statements
+
+ * `let`
+ 	// let usage
+ 	let @x = 1
 
 
