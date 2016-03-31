@@ -29,10 +29,9 @@ List of currently supported types :
 
 ### Builtin statements
 
- * `let`
+* `let`
 
- 	// let usage
- 	
+
  	let @x = 1
 
 
