@@ -19,8 +19,13 @@ Variables declaration
 
 	let @x : int = 1
 
-Types : string, int, bool, table
+### Types 
 
+List of currently supported types :
+ * `string` 
+ * `int`
+ * `bool` 
+ * `table`
 
 
 
