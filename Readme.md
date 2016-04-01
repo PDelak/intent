@@ -1,7 +1,8 @@
 intent
 =======
 
-Intent is a simple programming language which aims simplicity of domain specific languages creation.
+Intent is a simple programming language which aims simplicity of domain specific languages creation. Language is exensible 
+and can process any context free grammar
 
 ### Hello world
 
@@ -35,13 +36,12 @@ List of currently supported types :
 
 * `if statement`
 
-		if (@x == 1) 
-		{
-		} 
-		else if(@x == 2) 
-		{
-		}
-		else 
-		{
-		}
+		if (@x == 1) {} 
+		else if(@x == 2) {}
+		else {}
 
+* `Loops`
+
+		while (@y == 1) {}
+
+		for( @x = 1, 5, 1) {}

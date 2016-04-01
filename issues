@@ -1,5 +1,4 @@
-types are not unique
-for instance i introduce number which already exists in intent typeset
+types are not unique - introducing a type with the same name as in intent typeset will lead to collision (namespaces are not respected)
 
 matchers for grouping do not work?
 
