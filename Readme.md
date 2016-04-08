@@ -90,3 +90,20 @@ Let's say that we would like to have a way to define state machines in a declara
 		    }
 		}
 	}
+
+To handle such definition following typeset needs to be added
+
+	typeset statemachine = [
+	  type main = stm stm_processor?;
+	  type stm = 'statemachine' "[a-zA-Z0-9]*" '{' config state* '}';
+	  type config = 'initialState' ':' "[a-zA-Z0-9]*";
+	  type state = 'state' "[a-zA-Z0-9]*" '{' transition entry* '}';
+	  type entry = (onEnter | onExit | onRead);
+	  type onEnter = 'onEnter' '(' "[a-zA-Z0-9]*" ')' '{' statement* '}';
+	  type onExit = 'onExit' '(' "[a-zA-Z0-9]*" ')' '{' statement* '}';
+	  type onRead = 'onRead' '(' "[a-zA-Z0-9]*" ')' '{' statement* '}';
+	  type stm_number = "[0-9]*";
+	  type stm_operator = '==' | '>=' | '<' | '>' | '<=';
+	  type transition = 'transition' ':' "[a-zA-Z0-9]*" 'when' stm_operator stm_number;
+	  type stm_processor = 'stm_process' identifier "[a-zA-Z0-9]*"; 
+	]
