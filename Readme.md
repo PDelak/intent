@@ -1,8 +1,7 @@
 intent
 =======
 
-Intent is a simple programming language which aims simplicity of domain specific languages creation. Language is exensible 
-and can process any context free grammar
+Intent is a programming language which aims is simplicity of domain specific languages creation. Main feature of the language is its extensibility, virtually it can parse any context free grammar. 
 
 ### Hello world
 
@@ -14,7 +13,7 @@ Variables declaration
 
 	let @x = 1
 
-* all identifiers starts with @ sign
+* all identifiers starts with @ sign (this is intentional to resolve keywords disambiquities)
 
 @x type will be inferred as int and is a shortcut for following declaration
 
@@ -45,3 +44,5 @@ List of currently supported types :
 		while (@y == 1) {}
 
 		for( @x = 1, 5, 1) {}
+
+### Extensions
