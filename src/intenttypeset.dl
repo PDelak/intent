@@ -102,7 +102,7 @@ typeset intent = [
 
   type match = 'match' '(' match_id ')' '{' match_case + '}' ;
 
-  type code = "[\+\-;:,_<>$@#=a-zA-Z0-9{} \t\(\)\"\?\.\^]"*;
+  type code = "[\+\-;:,_<>$@#=a-zA-Z0-9{} \t\(\)\"\?\.\^\[\]]"*;
  
   type match_case = '|' number? '=>' '{' code '}';
 
