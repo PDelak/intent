@@ -1,0 +1,173 @@
+typeset statemachine = [
+  type main = stm stm_processor?;
+  type stm = 'statemachine' "[a-zA-Z0-9]*" '{' config state* '}';
+  type config = 'initialState' ':' "[a-zA-Z0-9]*";
+  type state = 'state' "[a-zA-Z0-9]*" '{' transition entry* '}';
+  type entry = (onEnter | onExit | onRead);
+  type onEnter = 'onEnter' '(' "[a-zA-Z0-9]*" ')' '{' statement* '}';
+  type onExit = 'onExit' '(' "[a-zA-Z0-9]*" ')' '{' statement* '}';
+  type onRead = 'onRead' '(' "[a-zA-Z0-9]*" ')' '{' statement* '}';
+  type stm_number = "[0-9]*";
+  type stm_operator = '==' | '>=' | '<' | '>' | '<=';
+  type transition = 'transition' ':' "[a-zA-Z0-9]*" 'when' stm_operator stm_number;
+  type stm_processor = 'stm_process' identifier "[a-zA-Z0-9]*"; 
+]
+
+match(main) 
+{
+  |=> {
+    $0 $1 
+  }
+}
+
+match(stm)
+{
+  |=> {
+    let @states = []
+    $3
+    $4
+  }
+}
+
+match(config)
+{
+  |=> {
+    let @config_initialState = "$2.value"
+  }
+}
+
+match(state)
+{
+  |=> {
+    $4
+    let @state_name = "$1.value"
+    @states["$1.value"] = [$3]
+  }
+}
+
+match(transition)
+{
+  |=> {
+    "transitionName" = "$2.value" 
+    "transitionOperator" = "$4.value"
+    "transitionNumber" = $5.value
+  }
+}
+
+match(entry)
+{
+   | => {
+      $0
+   }
+}
+
+match(onEnter)
+{
+   |=> {
+      function @onEnter_$2.value() 
+      {      
+        $5.value      
+      }
+   }
+}
+
+match(onExit)
+{
+   |=> {
+      function @onExit_$2.value() 
+      {
+        $5.value
+      }
+   }
+}
+
+match(onRead)
+{
+   |=> {
+      function @onRead_$2.value() 
+      {
+        $5.value
+      }
+   }
+}
+
+
+match(stm_processor)
+{
+  |=> {
+
+    if(@config_initialState == "below5") @onEnter_below5()
+    if(@config_initialState == "above5") @onEnter_above5()
+    let @currentState = @config_initialState   
+    let @transitions = @states[@config_initialState]
+
+    let @operator = @transitions["transitionOperator"]
+    let @index = 1
+    for(@index = 1, 12, 1) {
+      if(@currentState == "below5")
+        if($1.value[@index] >= @transitions["transitionNumber"]) 
+        {
+          @onExit_below5()
+          @onEnter_above5()
+          @currentState = "above5"
+        }
+      if(@currentState == "above5")
+        if($1.value[@index] < @transitions["transitionNumber"]) 
+        {
+          @onExit_above5()
+          @onEnter_below5()
+          @currentState = "below5"
+        }
+      if($1.value[@index] >= @transitions["transitionNumber"]) 
+      {
+        @onRead_above5()
+      }
+      
+      if($1.value[@index] < @transitions["transitionNumber"]) 
+      {
+        @onRead_below5()
+      }
+    }
+  }
+}
+
+let @table = [0 1 2 3 4 5 6 7 8 9 2 3]
+
+statemachine ab 
+{
+  initialState : below5
+
+  state below5 {
+    transition : above5 when >= 5
+    onEnter(below5)
+    {      
+      @print("Entering below5")
+    }
+    onExit(below5)
+    {
+      @print("Exitting below5")      
+    }
+    onRead(below5)
+    {
+      @print("Reading below5")      
+    }
+  }
+
+  state above5 {
+    transition : below5 when < 5
+    onEnter(above5)
+    {      
+      @print("Entering above5")
+    }
+    onExit(above5)
+    {
+      @print("Exitting above5")      
+    }
+    onRead(above5)
+    {
+      @print("Reading above5")      
+    }
+  }
+}
+
+stm_process @table ab
