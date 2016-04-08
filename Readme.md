@@ -46,3 +46,47 @@ List of currently supported types :
 		for( @x = 1, 5, 1) {}
 
 ### Extensions
+
+In order to extend a language with specific grammar, a typeset has to be defined. Typeset is a kind of grammar plugin.
+Let's say that we would like to have a way to define state machines in a declarative way
+
+	statemachine basic
+	{
+  		initialState : below5
+
+	    state below5 
+	    {
+		    transition : above5 when >= 5
+		
+		    onEnter(below5)
+		    {      
+		      @print("Entering below5")
+		    }
+		    onExit(below5)
+		    {
+		      @print("Exitting below5")      
+		    }
+		    onRead(below5)
+		    {
+		      @print("Reading below5")      
+		    }
+	  	}
+
+		state above5 
+		{
+		    transition : below5 when < 5
+
+		    onEnter(above5)
+		    {      
+		      @print("Entering above5")
+		    }
+		    onExit(above5)
+		    {
+		      @print("Exitting above5")      
+		    }
+		    onRead(above5)
+		    {
+		      @print("Reading above5")      
+		    }
+		}
+	}
