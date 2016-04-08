@@ -7,9 +7,7 @@ Intent is a programming language which aims is simplicity of domain specific lan
 
 	@print "hello world"
 
-### Ordinary stuff
-
-Variables declaration
+### Variables declaration
 
 	let @x = 1
 
