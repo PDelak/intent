@@ -127,13 +127,20 @@ Currently intent is compiling on windows, but it written in standard c++ so ther
 
 ### Current work
 
-I'm currently working on following things:
-
  * `stability`
  * `compiler diagnostic (better error messages)`
 
 ### Future work 
+
  * `functions as first class citizens`
  * `reflection mechanism` 
+
+### Dependencies
+intent depends on three 3rd party libraries
+
+ * `dparser - sglr parser (i'm considering to write new parser engine from scratch due to some limitations, but that's future)`
+ * `lexertl - lexer library` 
+ * `lua - used as a backend` 
+
  
 
