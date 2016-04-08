@@ -107,3 +107,33 @@ To handle such definition following typeset needs to be added
 	  type transition = 'transition' ':' "[a-zA-Z0-9]*" 'when' stm_operator stm_number;
 	  type stm_processor = 'stm_process' identifier "[a-zA-Z0-9]*"; 
 	]
+
+After that your problem will "eat" grammar, but there is one additional step needed to have a working example - definition of code generator.
+To do that, we have to define set of matchers that will match specific productions. Below onEnter match definition.
+
+	match(onEnter)
+	{
+	   |=> {
+	      function @onEnter_$2.value() 
+	      {      
+	        $5.value      
+	      }
+	   }
+	}
+
+### Platforms
+
+Currently intent is compiling on windows, but it written in standard c++ so there should not be a problem to port it to any other platform
+
+### Current work
+
+I'm currently working on following things:
+
+ * `stability`
+ * `compiler diagnostic (better error messages)`
+
+### Future work 
+ * `functions as first class citizens`
+ * `reflection mechanism` 
+ 
+
