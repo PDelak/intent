@@ -106,7 +106,7 @@ To handle such definition following typeset needs to be added
 	  type stm_processor = 'stm_process' identifier "[a-zA-Z0-9]*"; 
 	]
 
-After that your problem will "eat" grammar, but there is one additional step needed to have a working example - definition of code generator.
+After that your program will "eat" grammar, but there is one additional step needed to have a working example - definition of code generator.
 To do that, we have to define set of matchers that will match specific productions. Below onEnter match definition.
 
 	match(onEnter)
