@@ -141,14 +141,14 @@ intent depends on three 3rd party libraries
  * `lua - used as a backend` 
 
  ### Known problems and limitations
-* `reference usage can lead to segfault`. 
+ * `reference usage can lead to segfault`. 
 
 Referencing to node is not checked against its availability. For instance referencing to $3 in below
 definition will lead to segfault.
 		
 
 		
-			type stm = stm stm_processor?;
+	type stm = stm stm_processor?;
 
 
 
