@@ -1,7 +1,9 @@
 intent
 =======
 
-Intent is a programming language which aims is simplicity of domain specific languages creation. Main feature of the language is its extensibility, virtually it can parse any context free grammar. 
+Intent is a programming language which aims is simplicity of domain specific languages creation. Main feature of the language is its extensibility, virtually it can be extended and parse any context free grammar. Besides of that, it is small and highly embeddable.
+For now, there are several limitations in order to build fully functional programs (look at Known problems and limitations), on the other hand
+it has implemented all elements to prove that approach makes sense.
 
 ### Hello world
 
@@ -143,12 +145,16 @@ intent depends on three 3rd party libraries
  ### Known problems and limitations
  * `reference usage can lead to segfault`. 
 
-Referencing to node is not checked against its availability. For instance referencing to $3 in below
-definition will lead to segfault.
+Referencing to node is not checked against its availability. For instance referencing to $2 in below
+definition will lead to segfault (stm production contains only two nonterminals $0 and $1).
 		
 
 		
 	type stm = stm stm_processor?;
 
 
+ * `line numbers in the case of parsing errors are missleading`
 
+* `function can not be passed to a table as value`  
+
+Due to this limitation, some features can not be implemented (dynamic polymorphism).
