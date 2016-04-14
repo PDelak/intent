@@ -52,43 +52,39 @@ Let's say that we would like to have a way to define state machines in a declara
 
 	statemachine basic
 	{
-  		initialState : below5
+	  initialState : below5
 
-	    state below5 
+	  state below5 {
+	    transition : above5 when >= 5
+	    onEnter
+	    {      
+	      @print("Entering below5")
+	    }
+	    onExit
 	    {
-		    transition : above5 when >= 5
-		
-		    onEnter(below5)
-		    {      
-		      @print("Entering below5")
-		    }
-		    onExit(below5)
-		    {
-		      @print("Exitting below5")      
-		    }
-		    onRead(below5)
-		    {
-		      @print("Reading below5")      
-		    }
-	  	}
+	      @print("Exitting below5")      
+	    }
+	    onRead
+	    {
+	      @print("Reading below5")      
+	    }
+	  }
 
-		state above5 
-		{
-		    transition : below5 when < 5
-
-		    onEnter(above5)
-		    {      
-		      @print("Entering above5")
-		    }
-		    onExit(above5)
-		    {
-		      @print("Exitting above5")      
-		    }
-		    onRead(above5)
-		    {
-		      @print("Reading above5")      
-		    }
-		}
+	  state above5 {
+	    transition : below5 when < 5
+	    onEnter
+	    {      
+	      @print("Entering above5")
+	    }
+	    onExit
+	    {
+	      @print("Exitting above5")      
+	    }
+	    onRead
+	    {
+	      @print("Reading above5")      
+	    }
+	  }
 	}
 
 To handle such definition following typeset needs to be added
@@ -114,9 +110,9 @@ To do that, we have to define set of matchers that will match specific productio
 	match(onEnter)
 	{
 	   |=> {
-	      function @onEnter_$2.value() 
+	      "onEnter" = function () 
 	      {      
-	        $5.value      
+	        $2.value      
 	      }
 	   }
 	}
