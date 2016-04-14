@@ -4,13 +4,13 @@ typeset statemachine = [
   type config = 'initialState' ':' "[a-zA-Z0-9]*";
   type state = 'state' "[a-zA-Z0-9]*" '{' transition entry* '}';
   type entry = (onEnter | onExit | onRead);
-  type onEnter = 'onEnter' '(' "[a-zA-Z0-9]*" ')' '{' statement* '}';
-  type onExit = 'onExit' '(' "[a-zA-Z0-9]*" ')' '{' statement* '}';
-  type onRead = 'onRead' '(' "[a-zA-Z0-9]*" ')' '{' statement* '}';
+  type onEnter = 'onEnter' '{' statement* '}';
+  type onExit = 'onExit' '{' statement* '}';
+  type onRead = 'onRead' '{' statement* '}';
   type stm_number = "[0-9]*";
   type stm_operator = '==' | '>=' | '<' | '>' | '<=';
   type transition = 'transition' ':' "[a-zA-Z0-9]*" 'when' stm_operator stm_number;
-  type stm_processor = 'stm_process' identifier "[a-zA-Z0-9]*"; 
+  type stm_processor = 'stm_process' identifier "[a-zA-Z0-9]*" "[0-9]*"; 
 ]
 
 match(main) 
@@ -39,9 +39,9 @@ match(config)
 match(state)
 {
   |=> {
-    $4
+
     let @state_name = "$1.value"
-    @states["$1.value"] = [$3]
+    @states["$1.value"] = [$3 $4]
   }
 }
 
@@ -51,6 +51,10 @@ match(transition)
     "transitionName" = "$2.value" 
     "transitionOperator" = "$4.value"
     "transitionNumber" = $5.value
+    "fun" = function (@value : string, @num : int)  {
+      return @value $4.value @num
+    }
+
   }
 }
 
@@ -64,9 +68,9 @@ match(entry)
 match(onEnter)
 {
    |=> {
-      function @onEnter_$2.value() 
+      "onEnter" = function () 
       {      
-        $5.value      
+        $2.value      
       }
    }
 }
@@ -74,9 +78,9 @@ match(onEnter)
 match(onExit)
 {
    |=> {
-      function @onExit_$2.value() 
-      {
-        $5.value
+      "onExit" = function () 
+      {      
+        $2.value      
       }
    }
 }
@@ -84,9 +88,9 @@ match(onExit)
 match(onRead)
 {
    |=> {
-      function @onRead_$2.value() 
-      {
-        $5.value
+      "onRead" = function () 
+      {      
+        $2.value      
       }
    }
 }
@@ -96,37 +100,33 @@ match(stm_processor)
 {
   |=> {
 
-    if(@config_initialState == "below5") @onEnter_below5()
-    if(@config_initialState == "above5") @onEnter_above5()
     let @currentState = @config_initialState   
     let @transitions = @states[@config_initialState]
-
+   
     let @operator = @transitions["transitionOperator"]
+
+    let @onEnter = @transitions["onEnter"]
+    @onEnter()
+
     let @index = 1
-    for(@index = 1, 12, 1) {
-      if(@currentState == "below5")
-        if($1.value[@index] >= @transitions["transitionNumber"]) 
+    for(@index = 1, $3.value, 1) {
+
+    let @transitions = @states[@currentState]
+    let @fun = @transitions["fun"]
+    @onEnter = @transitions["onEnter"]
+    let @onExit = @transitions["onExit"]
+
+	if(@fun($1.value[@index] @transitions["transitionNumber"]))
         {
-          @onExit_below5()
-          @onEnter_above5()
-          @currentState = "above5"
+          @onExit()
+          @currentState = @transitions["transitionName"]
+	  @transitions = @states[@currentState] 
+          @onEnter = @transitions["onEnter"]
+          @onEnter()
         }
-      if(@currentState == "above5")
-        if($1.value[@index] < @transitions["transitionNumber"]) 
-        {
-          @onExit_above5()
-          @onEnter_below5()
-          @currentState = "below5"
-        }
-      if($1.value[@index] >= @transitions["transitionNumber"]) 
-      {
-        @onRead_above5()
-      }
-      
-      if($1.value[@index] < @transitions["transitionNumber"]) 
-      {
-        @onRead_below5()
-      }
+
+      let @onRead = @transitions["onRead"]
+      @onRead()
     }
   }
 }
@@ -139,15 +139,15 @@ statemachine basic
 
   state below5 {
     transition : above5 when >= 5
-    onEnter(below5)
+    onEnter
     {      
       @print("Entering below5")
     }
-    onExit(below5)
+    onExit
     {
       @print("Exitting below5")      
     }
-    onRead(below5)
+    onRead
     {
       @print("Reading below5")      
     }
@@ -155,19 +155,19 @@ statemachine basic
 
   state above5 {
     transition : below5 when < 5
-    onEnter(above5)
+    onEnter
     {      
       @print("Entering above5")
     }
-    onExit(above5)
+    onExit
     {
       @print("Exitting above5")      
     }
-    onRead(above5)
+    onRead
     {
       @print("Reading above5")      
     }
   }
 }
 
-stm_process @table ab
+stm_process @table ab 12
