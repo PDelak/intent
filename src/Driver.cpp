@@ -395,20 +395,9 @@ std::pair<std::string, std::string> compileDL(const std::string& filename)
 
   const char* b = &tmpBuffer[0];
   const char* e = &tmpBuffer[0] + tmpBuffer.size();
-
-  try {
-    pos = tp.parse(b, e, typeset);
-    std::copy(b + pos, e, std::back_inserter(model));    
+  pos = tp.parse(b, e, typeset);
+  std::copy(b + pos, e, std::back_inserter(model));    
     
-  }
-
-  catch (const SyntaxError& se) {
-    std::cerr << "compilation error : " << se.what() << std::endl;
-  }
-  catch (const std::runtime_error& re) {
-    std::cerr << re.what() << std::endl;
-  }
-
   std::string typeset_copy = "{\n#include <iostream>\n}\n";
   typeset_copy += typeset;
   return std::make_pair(typeset_copy, model);
@@ -607,7 +596,9 @@ int main(int argc, char *argv[]) {
   }  
   catch (const FileNotFoundException& fe) { std::cerr << fe.what() << std::endl; }
   catch (const SymbolNotFound& snf) { std::cerr << snf.what() << std::endl; }
+  catch (const SyntaxError& se) { std::cerr << "compilation error : " << se.what() << std::endl;}
   catch (const SemanticError& semaError) { std::cerr << semaError.what() << std::endl; }
+  catch (const std::runtime_error& re) { std::cerr << re.what() << std::endl; }
   catch (...) { std::cerr << "unknown error" << std::endl; }
   
   return 0;

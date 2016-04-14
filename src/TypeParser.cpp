@@ -92,6 +92,12 @@ void type_parser::parseType(const std::string& name, lexertl::recursive_match_re
     typeset += " " + results.str() + " ";
            
   } while (results.id != SEMICOLON && results.id != CLOSE_BRACKET && results.id != EOF);
+
+  std::stringstream ss;
+  std::string msg = "expected ';' at end of ";
+  msg += name;
+  msg += " type definition";
+  if(results.id != SEMICOLON) throw SyntaxError(msg.c_str());
   typeset += "\n";
 }
 
@@ -114,7 +120,17 @@ size_t type_parser::parse(const char* begin, const char* end, std::string& types
       getToken<ASSIGNMENT>(results, eof, "expected '='");      
       typeset += " : ";
       parseType(name, results, eof, typeset); 
-    } 
+    }
+    else if(results.id != CLOSE_BRACKET){
+      std::stringstream ss;
+      ss << currentLine;
+      std::string msg = "expected type keyword ";
+      msg += "but got ";
+      msg += results.str();
+      msg += " in line : ";
+      msg += ss.str();
+      throw SyntaxError(msg.c_str());
+    }
   
   } while (results.id != CLOSE_BRACKET);
   pos = results.end - begin;
