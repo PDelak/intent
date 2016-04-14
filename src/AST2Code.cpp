@@ -232,6 +232,31 @@ void AST2Code::PostVisit(FunctionDecl* node)
   });
 }
 
+void AST2Code::PreVisit(FunctionExpr* node)
+{
+  shift(stream);
+}
+
+void AST2Code::PostVisit(FunctionExpr* node)
+{
+  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+    std::string r;
+    size_t index = begin;
+    size_t size = end - begin;
+    bool second = false;
+    r += "function ";
+    r += "(";
+    for (size_t i = 0; i < size; i++) {
+      if (second) r += ", ";
+      r += stream[begin + i].second;
+      second = true;
+    }
+    r += ")";
+    r += stream[end].second;
+    return r;
+  });
+}
+
 void AST2Code::PreVisit(FunctionCall* node)
 {
   shift(stream);

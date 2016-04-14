@@ -548,6 +548,7 @@ auto make_builtin_reductions()
     { "*parameter_0*", parameter_reduction },
     { "*argument_0*", argument_reduction },
     { "*function_declaration_0*", function_declaration_reduction },
+    { "*function_expression_0*", function_expression_reduction },
     { "*function_body_0*", function_body_reduction },
     { "*function_call_0*", function_call_reduction },
     { "*return_statement_0*", return_statement_reduction },

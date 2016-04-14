@@ -22,7 +22,8 @@ typeset intent = [
                 | bin_expr 
                 | unary_expression
                 | function_call
-                | table );
+                | table 
+                | function_expression);
 
   type if_statement =   'if' '(' expression ')' statement property!(right, 6000)
                        | 'if' '(' expression ')' statement 'else' statement property!(right,6100);
@@ -63,6 +64,8 @@ typeset intent = [
   type argument           = expression;
 
   type function_declaration  = 'function' identifier '(' parameter? (',' parameter)* ')' (':' type_ex)? function_body;
+
+  type function_expression  = 'function' '(' parameter? (',' parameter)* ')' (':' type_ex)? function_body;
 
   type function_body = compound_statement;
 

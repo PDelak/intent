@@ -19,6 +19,7 @@ struct TypeName;
 struct Parameter;
 struct FunctionBody;
 struct FunctionDecl;
+struct FunctionExpr;
 struct FunctionCall;
 struct CompoundStatement;
 struct Argument;
@@ -68,6 +69,8 @@ struct Visitor
   virtual void PostVisit(FunctionBody*) = 0;
   virtual void PreVisit(FunctionDecl*) = 0;
   virtual void PostVisit(FunctionDecl*) = 0;
+  virtual void PreVisit(FunctionExpr*) = 0;
+  virtual void PostVisit(FunctionExpr*) = 0;
   virtual void PreVisit(FunctionCall*) = 0;
   virtual void PostVisit(FunctionCall*) = 0;
   virtual void PreVisit(CompoundStatement*) = 0;
@@ -138,6 +141,8 @@ public:
   virtual void PostVisit(FunctionBody*);
   virtual void PreVisit(FunctionDecl*);
   virtual void PostVisit(FunctionDecl*);
+  virtual void PreVisit(FunctionExpr*);
+  virtual void PostVisit(FunctionExpr*);
   virtual void PreVisit(FunctionCall*);
   virtual void PostVisit(FunctionCall*);
   virtual void PreVisit(CompoundStatement*);

@@ -33,6 +33,7 @@ int type_reduction(void *_ps, void **_children, int _n_children, int _offset, D_
 int parameter_reduction(void *_ps, void **_children, int _n_children, int _offset, D_Parser *_parser);
 int argument_reduction(void *_ps, void **_children, int _n_children, int _offset, D_Parser *_parser);
 int function_declaration_reduction(void *_ps, void **_children, int _n_children, int _offset, D_Parser *_parser);
+int function_expression_reduction(void *_ps, void **_children, int _n_children, int _offset, D_Parser *_parser);
 int function_body_reduction(void *_ps, void **_children, int _n_children, int _offset, D_Parser *_parser);
 int function_call_reduction(void *_ps, void **_children, int _n_children, int _offset, D_Parser *_parser);
 int return_statement_reduction(void *_ps, void **_children, int _n_children, int _offset, D_Parser *_parser);

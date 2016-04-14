@@ -36,6 +36,7 @@ enum NodeType {
   ParameterAST,
   FunctionBodyAST,
   FunctionDeclAST,
+  FunctionExprAST,
   FunctionCallAST,
   CompoundStatementAST,
   ArgumentAST,
@@ -389,6 +390,45 @@ protected:
   virtual std::string serializeImpl(const ASTNodeDecorator& decorator = ASTNodeDecorator());
 private:
   D_ParseNode* m_identifier;
+  D_ParseNode* m_firstParameter;
+  D_ParseNode* m_otherParameters;
+  D_ParseNode* m_returnType;
+  D_ParseNode* m_body;
+};
+
+struct FunctionExpr : public Expression
+{
+  FunctionExpr(D_ParseNode* firstParameter,
+               D_ParseNode* otherParameters,
+               D_ParseNode* returnType,
+               D_ParseNode* body);
+
+  virtual NodeType getId();
+  virtual void accept(Visitor* visitor);
+
+  D_ParseNode* getFirstParameterPtr() const
+  {
+    return m_firstParameter;
+  }
+
+  D_ParseNode* getOtherParametersPtr() const
+  {
+    return m_otherParameters;
+  }
+
+  D_ParseNode* getReturnTypePtr() const
+  {
+    return m_returnType;
+  }
+
+  D_ParseNode* getBodyPtr() const
+  {
+    return m_body;
+  }
+
+protected:
+  virtual std::string serializeImpl(const ASTNodeDecorator& decorator = ASTNodeDecorator());
+private:
   D_ParseNode* m_firstParameter;
   D_ParseNode* m_otherParameters;
   D_ParseNode* m_returnType;

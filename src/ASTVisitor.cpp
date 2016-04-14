@@ -121,6 +121,28 @@ void FunctionDecl::accept(Visitor* visitor)
   visitor->PostVisit(this);
 }
 
+void FunctionExpr::accept(Visitor* visitor)
+{
+  visitor->PreVisit(this);
+
+  D_ParseNode *xpn = d_get_child(m_firstParameter, 0);
+  if (xpn) {
+    xpn->user.p->accept(visitor);
+  }
+  int nch = d_get_number_of_children(m_otherParameters);
+  if (nch != 0) {
+    for (int i = 0; i < nch; i++) {
+      D_ParseNode *xpn = d_get_child(m_otherParameters, i);
+      D_ParseNode *xpn2 = d_get_child(xpn, 1);
+      xpn2->user.p->accept(visitor);
+    }
+  }
+  m_body->user.p->accept(visitor);
+
+  visitor->PostVisit(this);
+}
+
+
 void FunctionCall::accept(Visitor* visitor)
 {
   visitor->PreVisit(this);

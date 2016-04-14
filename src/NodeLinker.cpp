@@ -153,6 +153,18 @@ void ASTNodeLinker::PostVisit(FunctionDecl*)
   nodeStack.pop();
 }
 
+void ASTNodeLinker::PreVisit(FunctionExpr* node)
+{
+  if (!nodeStack.empty()) node->setParent(nodeStack.top());
+  nodeStack.push(node);
+}
+
+void ASTNodeLinker::PostVisit(FunctionExpr*)
+{
+  nodeStack.pop();
+}
+
+
 void ASTNodeLinker::PreVisit(FunctionCall* node)
 {
   if (!nodeStack.empty()) node->setParent(nodeStack.top());

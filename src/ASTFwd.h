@@ -12,6 +12,9 @@ typedef std::shared_ptr<Node> NodePtr;
 struct FunctionDecl;
 typedef std::shared_ptr<FunctionDecl> FunctionDeclPtr;
 
+struct FunctionExpr;
+typedef std::shared_ptr<FunctionExpr> FunctionExprPtr;
+
 struct StatementBase;
 typedef std::shared_ptr<StatementBase> StatementBasePtr;
 

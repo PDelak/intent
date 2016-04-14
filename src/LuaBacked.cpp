@@ -93,6 +93,36 @@ std::string FunctionDecl::serializeImpl(const ASTNodeDecorator& decorator) {
   return out ; 
 }
 
+std::string FunctionExpr::serializeImpl(const ASTNodeDecorator& decorator) {
+
+  std::string out = "function ";
+  out += "(";
+  D_ParseNode *xpn = d_get_child(m_firstParameter, 0);
+  if (xpn) {
+    std::string parameterName = xpn->user.p->serialize(decorator);
+    parameterName = std::string(parameterName.begin() + 1, parameterName.end());
+    out += parameterName;
+  }
+  int nch = d_get_number_of_children(m_otherParameters);
+  if (nch != 0) {
+    for (int i = 0; i < nch; i++) {
+      out += ", ";
+      D_ParseNode *xpn = d_get_child(m_otherParameters, i);
+      D_ParseNode *xpn2 = d_get_child(xpn, 1);
+      std::string parameterName = xpn2->user.p->serialize(decorator);
+      parameterName = std::string(parameterName.begin() + 1, parameterName.end());
+      out += parameterName;
+
+    }
+  }
+  out += ")\n";
+
+  out += m_body->user.p->serialize(decorator);
+
+  return out;
+}
+
+
 std::string FunctionCall::serializeImpl(const ASTNodeDecorator& decorator) {
   D_ParseNode *xpn = d_get_child(m_identifier, 0);
   std::string id = std::string(xpn->start_loc.s + 1, xpn->end);

@@ -32,6 +32,8 @@ void NullVisitor::PreVisit(TypeName*) {}
 void NullVisitor::PostVisit(TypeName*) {}
 void NullVisitor::PreVisit(FunctionDecl*) {}
 void NullVisitor::PostVisit(FunctionDecl*) {}
+void NullVisitor::PreVisit(FunctionExpr*) {}
+void NullVisitor::PostVisit(FunctionExpr*) {}
 void NullVisitor::PreVisit(FunctionCall*) {}
 void NullVisitor::PostVisit(FunctionCall*) {}
 void NullVisitor::PreVisit(CompoundStatement*) {}

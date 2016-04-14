@@ -40,6 +40,8 @@ struct ASTNodeLinker : public Visitor
   virtual void PostVisit(FunctionBody*);
   virtual void PreVisit(FunctionDecl*);
   virtual void PostVisit(FunctionDecl*);
+  virtual void PreVisit(FunctionExpr*);
+  virtual void PostVisit(FunctionExpr*);
   virtual void PreVisit(FunctionCall*);
   virtual void PostVisit(FunctionCall*);
   virtual void PreVisit(CompoundStatement*);

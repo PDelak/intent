@@ -225,6 +225,23 @@ FunctionDecl::FunctionDecl(D_ParseNode* identifier,
 NodeType FunctionDecl::getId() 
 { return FunctionDeclAST; }
 
+FunctionExpr::FunctionExpr(
+  D_ParseNode* firstParameter,
+  D_ParseNode* otherParameters,
+  D_ParseNode* returnType,
+  D_ParseNode* body)
+  : m_firstParameter(firstParameter)
+  , m_otherParameters(otherParameters)
+  , m_returnType(returnType)
+  , m_body(body)
+{}
+
+NodeType FunctionExpr::getId()
+{
+  return FunctionExprAST;
+}
+
+
 FunctionCall::FunctionCall(D_ParseNode* identifier, 
                            D_ParseNode* args) 
   : m_identifier(identifier)
@@ -475,6 +492,7 @@ std::string DynamicNode::generateCode()
       // that's check agains DynamicNode Type
       if (group && 
           group->user.p && 
+          group->user.p.get() &&
           is<DynamicNode>(group->user.p.get()) ) 
       {        
         std::string child_code = static_cast<DynamicNode*>(group->user.p.get())->generateCode();

@@ -141,6 +141,14 @@ int function_declaration_reduction(void *_ps, void **_children, int _n_children,
   return 0;
 }
 
+int function_expression_reduction(void *_ps, void **_children, int _n_children, int _offset, D_Parser *_parser)
+{
+  FunctionExprPtr p(new FunctionExpr(&(*(D_PN(_children[2], _offset))), &(*(D_PN(_children[3], _offset))), &(*(D_PN(_children[5], _offset))), &(*(D_PN(_children[6], _offset)))));
+  (D_PN(_ps, _offset)->user).p = p;
+
+  return 0;
+}
+
 int function_body_reduction(void *_ps, void **_children, int _n_children, int _offset, D_Parser *_parser)
 {
   FunctionBodyPtr p(new FunctionBody(&(*(D_PN(_children[0], _offset)))));
