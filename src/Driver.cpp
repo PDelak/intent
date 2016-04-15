@@ -473,8 +473,13 @@ bool compileHelper(const std::string& metamodel,
   const char* e = model.c_str() + model.size();
 
   bool result = (dparse(p, const_cast<char*>(b), std::distance(b, e)) && !p->syntax_errors);
-  if (!result) printf("compilation failure %d %s\n", p->loc.line, p->loc.pathname);
+  
+  std::stringstream ss;
+  ss << p->loc.line;
+  std::string msg = ss.str();
+  msg += " ";
 
+  if (!result) throw SyntaxError(msg.c_str());
   return result;
 
 }
