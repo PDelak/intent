@@ -78,6 +78,8 @@ void type_parser::parseType(const std::string& name, lexertl::recursive_match_re
     //  if so, a group flag is set to true
     //  reduction is generated for the whole group
     //     
+    if (results.id == TEXTORID) symbols.insert(results.str());
+    
     if (results.id == LEFT_PAREN) group = true;
     if (results.id == RIGHT_PAREN) group = false;
         
@@ -119,6 +121,7 @@ size_t type_parser::parse(const char* begin, const char* end, std::string& types
       typeset += name;
       getToken<ASSIGNMENT>(results, eof, "expected '='");      
       typeset += " : ";
+      productions.insert(name);
       parseType(name, results, eof, typeset); 
     }
     else if(results.id != CLOSE_BRACKET){
@@ -133,6 +136,14 @@ size_t type_parser::parse(const char* begin, const char* end, std::string& types
     }
   
   } while (results.id != CLOSE_BRACKET);
+  for (auto element : symbols) {
+    auto it = productions.find(element);
+    std::string msg = "production ";
+    msg += element;
+    msg += " has not been defined ";
+    if (it == productions.end()) throw SyntaxError(msg.c_str());
+  }
+
   pos = results.end - begin;
   return pos;
 }

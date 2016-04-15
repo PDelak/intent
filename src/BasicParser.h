@@ -70,10 +70,14 @@ public:
     }
     return results.str();
   }
+  
   void buildRules()
   {
     lexertl::generator::build(rules, sm);
   }
+  
+  size_t getCurrentLine() const { return currentLine; }
+
 protected:
   lexertl::rules                     rules;
   lexertl::state_machine             sm;

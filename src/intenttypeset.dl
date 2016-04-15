@@ -111,6 +111,6 @@ typeset intent = [
 
   type extension = main;
 
-  type main = ;
 ]
+
 

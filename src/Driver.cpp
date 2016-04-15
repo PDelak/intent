@@ -387,19 +387,35 @@ std::pair<std::string, std::string> compileDL(const std::string& filename)
     std::copy(intent_typeset.begin(), 
               intent_typeset.end(), 
               std::back_inserter(tmpBuffer));
+                             
+    //
+    // add main production
+    //
+    std::string mainProd = "  type main = ;\n]";    
+    auto it = std::find(tmpBuffer.rbegin(), tmpBuffer.rend(), ']');
+    size_t size = std::distance(tmpBuffer.begin(), it.base());
+    tmpBuffer.resize(size + mainProd.size() - 1);
+    std::copy(mainProd.begin(), mainProd.end(), it.base() - 1 );
+    
+  
 
     std::copy(buffer.begin(), 
               buffer.end(), 
               std::back_inserter(tmpBuffer));
+
   }
+
 
   const char* b = &tmpBuffer[0];
   const char* e = &tmpBuffer[0] + tmpBuffer.size();
+  
   pos = tp.parse(b, e, typeset);
+  
   std::copy(b + pos, e, std::back_inserter(model));    
     
   std::string typeset_copy = "{\n#include <iostream>\n}\n";
   typeset_copy += typeset;
+
   return std::make_pair(typeset_copy, model);
 
 }

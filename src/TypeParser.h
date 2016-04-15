@@ -8,6 +8,7 @@
 
 #include <sstream>
 #include <unordered_map>
+#include <unordered_set>
 #include <tuple>
 #include "../lexertl/rules.hpp"
 #include "../lexertl/state_machine.hpp"
@@ -28,6 +29,8 @@ public:
   void parseType(const std::string& name, lexertl::recursive_match_results<const char* >& results, bool eof, std::string& typeset);
   void addProperty(lexertl::recursive_match_results<const char* >& results, bool eof, std::string& typeset);
 private:
+  std::unordered_set<std::string> productions;
+  std::unordered_set<std::string> symbols;
 };
 
 #endif
