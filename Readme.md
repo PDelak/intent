@@ -7,17 +7,15 @@ it has implemented all elements to prove that approach makes sense.
 
 ### Hello world
 
-	@print "hello world"
+	print ("hello world");
 
 ### Variables declaration
 
-	let @x = 1
+	let x = 1;
 
-* all identifiers starts with @ sign (this is intentional to resolve keywords disambiquities)
+x type will be inferred as int and is a shortcut for following declaration
 
-@x type will be inferred as int and is a shortcut for following declaration
-
-	let @x : int = 1
+	let x : int = 1;
 
 ### Types 
 
@@ -31,19 +29,19 @@ List of currently supported types :
 
 * `let`
 
-		let @x = 1
+		let x = 1;
 
 * `if statement`
 
-		if (@x == 1) {} 
-		else if(@x == 2) {}
+		if (x == 1) {} 
+		else if(x == 2) {}
 		else {}
 
 * `Loops`
 
-		while (@y == 1) {}
+		while (y == 1) {}
 
-		for( @x = 1, 5, 1) {}
+		for( x = 1, 5, 1) {}
 
 ### Extensions
 
@@ -58,15 +56,15 @@ Let's say that we would like to have a way to define state machines in a declara
 	    transition : above5 when >= 5
 	    onEnter
 	    {      
-	      @print("Entering below5")
+	      print("Entering below5");
 	    }
 	    onExit
 	    {
-	      @print("Exitting below5")      
+	      print("Exitting below5");
 	    }
 	    onRead
 	    {
-	      @print("Reading below5")      
+	      print("Reading below5");
 	    }
 	  }
 
@@ -74,15 +72,15 @@ Let's say that we would like to have a way to define state machines in a declara
 	    transition : below5 when < 5
 	    onEnter
 	    {      
-	      @print("Entering above5")
+	      print("Entering above5");
 	    }
 	    onExit
 	    {
-	      @print("Exitting above5")      
+	      print("Exitting above5");
 	    }
 	    onRead
 	    {
-	      @print("Reading above5")      
+	      print("Reading above5");
 	    }
 	  }
 	}

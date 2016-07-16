@@ -8,6 +8,7 @@
 
 struct Program;
 struct Statement;
+struct ExpressionStatement;
 struct Expression;
 struct LetStatement;
 struct Identifier;
@@ -47,6 +48,8 @@ struct Visitor
   virtual void PostVisit(Program*) = 0;
   virtual void PreVisit(Statement*) = 0;
   virtual void PostVisit(Statement*) = 0;
+  virtual void PreVisit(ExpressionStatement*) = 0;
+  virtual void PostVisit(ExpressionStatement*) = 0;
   virtual void PreVisit(Expression*) = 0;
   virtual void PostVisit(Expression*) = 0;
   virtual void PreVisit(LetStatement*) = 0;
@@ -119,6 +122,8 @@ public:
   virtual void PostVisit(Program*);
   virtual void PreVisit(Statement*);
   virtual void PostVisit(Statement*);
+  virtual void PreVisit(ExpressionStatement*);
+  virtual void PostVisit(ExpressionStatement*);
   virtual void PreVisit(Expression*);
   virtual void PostVisit(Expression*);
   virtual void PreVisit(LetStatement*);

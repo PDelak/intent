@@ -10,6 +10,8 @@ void NullVisitor::PreVisit(Program*) {}
 void NullVisitor::PostVisit(Program*) {}
 void NullVisitor::PreVisit(Statement*) {}
 void NullVisitor::PostVisit(Statement*) {}
+void NullVisitor::PreVisit(ExpressionStatement*) {}
+void NullVisitor::PostVisit(ExpressionStatement*) {}
 void NullVisitor::PreVisit(Expression*) {}
 void NullVisitor::PostVisit(Expression*) {}
 void NullVisitor::PreVisit(LetStatement*) {}

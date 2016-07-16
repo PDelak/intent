@@ -62,7 +62,7 @@ Program::Program(D_ParseNode* expressions)
   function_type* ftype = static_cast<function_type*>(printFunction.get());
   TypePtr generic(new generic_type);
   ftype->parameters.push_back(std::make_pair("",generic));
-  symbol_table.insertSymbol("@print", printFunction);
+  symbol_table.insertSymbol("print", printFunction);
 }
 
 void Program::setOutput(const std::string& out) 
@@ -112,8 +112,18 @@ Expression::Expression(D_ParseNode* expression = 0)
   :m_expression(expression) 
 {}
 
-NodeType Expression::getId() 
-{ return ExpressionAST; }
+NodeType ExpressionStatement::getId() 
+{ return ExpressionStatementAST; }
+
+ExpressionStatement::ExpressionStatement(D_ParseNode* expression = 0)
+    :m_expression(expression)
+{}
+
+NodeType Expression::getId()
+{
+    return ExpressionAST;
+}
+
 
 LetStatement::LetStatement(D_ParseNode* identifier, 
                            D_ParseNode* type, 

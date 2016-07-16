@@ -20,6 +20,7 @@ int program_reduction(void *_ps, void **_children, int _n_children, int _offset,
 int compound_statement_reduction(void *_ps, void **_children, int _n_children, int _offset, D_Parser *_parser);
 int statement_reduction(void *_ps, void **_children, int _n_children, int _offset, D_Parser *_parser);
 int expression_reduction(void *_ps, void **_children, int _n_children, int _offset, D_Parser *_parser);
+int expression_statement_reduction(void *_ps, void **_children, int _n_children, int _offset, D_Parser *_parser);
 int if_reduction(void *_ps, void **_children, int _n_children, int _offset, D_Parser *_parser);
 int if_else_reduction(void *_ps, void **_children, int _n_children, int _offset, D_Parser *_parser);
 int while_loop_reduction(void *_ps, void **_children, int _n_children, int _offset, D_Parser *_parser);

@@ -29,6 +29,15 @@ int statement_reduction(void *_ps, void **_children, int _n_children, int _offse
   return 0;
 }
 
+int expression_statement_reduction(void *_ps, void **_children, int _n_children, int _offset, D_Parser *_parser)
+{
+    ExpressionStatementPtr p(new ExpressionStatement(&(*(D_PN(_children[0], _offset)))));
+    (D_PN(_ps, _offset)->user).p = p;
+
+    return 0;
+}
+
+
 int expression_reduction(void *_ps, void **_children, int _n_children, int _offset, D_Parser *_parser)
 {
   ExpressionPtr p(new Expression(&(*(D_PN(_children[0], _offset)))));

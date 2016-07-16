@@ -25,19 +25,28 @@ std::string Statement::serializeImpl(const ASTNodeDecorator& decorator) {
   return xpn->user.p->serialize(decorator);
 }
 
+std::string ExpressionStatement::serializeImpl(const ASTNodeDecorator& decorator) {
+    std::string value = m_expression->user.p->serialize(decorator);
+    value += '\n';
+    return value;
+}
+
 std::string Expression::serializeImpl(const ASTNodeDecorator& decorator) {
   D_ParseNode *xpn = d_get_child(m_expression, 0);
-  return xpn->user.p->serialize(decorator);
+  std::string value = xpn->user.p->serialize(decorator);
+  return value;
 }
 
 
 std::string LetStatement::serializeImpl(const ASTNodeDecorator& decorator) {
-    return std::string().append(m_identifier->user.p->serialize(decorator))
-    .append("=").append(m_declaration->user.p->serialize(decorator))
-    .append("\n");;
+    std::string value = m_identifier->user.p->serialize(decorator);
+    value.append("=");
+    value.append(m_declaration->user.p->serialize(decorator));
+    value.append("\n");
+    return value;
 }
 
-std::string Identifier::serializeImpl(const ASTNodeDecorator& decorator) { return std::string(id.begin()+1, id.end()); }
+std::string Identifier::serializeImpl(const ASTNodeDecorator& decorator) { return std::string(id.begin(), id.end()); }
 std::string StringExpr::serializeImpl(const ASTNodeDecorator& decorator) { return id; }
 
 std::string Literal::serializeImpl(const ASTNodeDecorator& decorator) {
@@ -63,7 +72,7 @@ std::string FunctionBody::serializeImpl(const ASTNodeDecorator& decorator) {
 
 std::string FunctionDecl::serializeImpl(const ASTNodeDecorator& decorator) {
   D_ParseNode *xpn = d_get_child(m_identifier, 0);
-  std::string id = std::string(xpn->start_loc.s + 1, xpn->end);
+  std::string id = std::string(xpn->start_loc.s, xpn->end);
   
   std::string out = "function ";
   out += id;
@@ -71,7 +80,7 @@ std::string FunctionDecl::serializeImpl(const ASTNodeDecorator& decorator) {
   xpn = d_get_child(m_firstParameter, 0);
   if (xpn) {
     std::string parameterName = xpn->user.p->serialize(decorator);
-    parameterName = std::string(parameterName.begin() + 1, parameterName.end());
+    parameterName = std::string(parameterName.begin(), parameterName.end());
     out += parameterName;
   }
   int nch = d_get_number_of_children(m_otherParameters);
@@ -81,7 +90,7 @@ std::string FunctionDecl::serializeImpl(const ASTNodeDecorator& decorator) {
       D_ParseNode *xpn = d_get_child(m_otherParameters, i);
       D_ParseNode *xpn2 = d_get_child(xpn, 1);
 	    std::string parameterName = xpn2->user.p->serialize(decorator);
-      parameterName = std::string(parameterName.begin() + 1, parameterName.end());
+      parameterName = std::string(parameterName.begin() , parameterName.end());
       out += parameterName;
         
     }
@@ -100,7 +109,7 @@ std::string FunctionExpr::serializeImpl(const ASTNodeDecorator& decorator) {
   D_ParseNode *xpn = d_get_child(m_firstParameter, 0);
   if (xpn) {
     std::string parameterName = xpn->user.p->serialize(decorator);
-    parameterName = std::string(parameterName.begin() + 1, parameterName.end());
+    parameterName = std::string(parameterName.begin() , parameterName.end());
     out += parameterName;
   }
   int nch = d_get_number_of_children(m_otherParameters);
@@ -110,7 +119,7 @@ std::string FunctionExpr::serializeImpl(const ASTNodeDecorator& decorator) {
       D_ParseNode *xpn = d_get_child(m_otherParameters, i);
       D_ParseNode *xpn2 = d_get_child(xpn, 1);
       std::string parameterName = xpn2->user.p->serialize(decorator);
-      parameterName = std::string(parameterName.begin() + 1, parameterName.end());
+      parameterName = std::string(parameterName.begin() , parameterName.end());
       out += parameterName;
 
     }
@@ -125,7 +134,7 @@ std::string FunctionExpr::serializeImpl(const ASTNodeDecorator& decorator) {
 
 std::string FunctionCall::serializeImpl(const ASTNodeDecorator& decorator) {
   D_ParseNode *xpn = d_get_child(m_identifier, 0);
-  std::string id = std::string(xpn->start_loc.s + 1, xpn->end);
+  std::string id = std::string(xpn->start_loc.s , xpn->end);
   std::string out;
   out += id;
 

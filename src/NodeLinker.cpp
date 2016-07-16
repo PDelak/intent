@@ -31,6 +31,19 @@ void ASTNodeLinker::PostVisit(Statement*)
   nodeStack.pop();
 }
 
+void ASTNodeLinker::PreVisit(ExpressionStatement* node)
+{
+    if (!nodeStack.empty()) node->setParent(nodeStack.top());
+
+    nodeStack.push(node);
+}
+
+void ASTNodeLinker::PostVisit(ExpressionStatement*)
+{
+    nodeStack.pop();
+}
+
+
 void ASTNodeLinker::PreVisit(Expression* node)
 {
   if (!nodeStack.empty()) node->setParent(nodeStack.top());

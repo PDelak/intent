@@ -31,6 +31,18 @@ void ASTPrinter::PostVisit(Statement*)
   deindent();
 }
 
+void ASTPrinter::PreVisit(ExpressionStatement*)
+{
+    indent();
+    out << "ExpressionStatement" << std::endl;
+}
+
+void ASTPrinter::PostVisit(ExpressionStatement*)
+{
+    deindent();
+}
+
+
 void ASTPrinter::PreVisit(Expression*) 
 {
   indent();

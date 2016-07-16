@@ -25,6 +25,7 @@ enum NodeType {
   NodeAST = 0,
   ProgramAST,
   StatementAST,
+  ExpressionStatementAST,
   ExpressionAST,
   LetStatementAST,
   IdentifierAST,
@@ -150,6 +151,20 @@ protected:
 
 private:
   D_ParseNode* m_statement;
+};
+
+struct ExpressionStatement : public Statement
+{
+    ExpressionStatement(D_ParseNode* expression);
+
+    virtual NodeType getId();
+    virtual void accept(Visitor* visitor);
+
+protected:
+    virtual std::string serializeImpl(const ASTNodeDecorator& decorator = ASTNodeDecorator());
+private:
+    D_ParseNode* m_expression;
+
 };
 
 

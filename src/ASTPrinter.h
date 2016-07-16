@@ -17,6 +17,8 @@ struct ASTPrinter : public Visitor
   virtual void PostVisit(Program*);
   virtual void PreVisit(Statement*);
   virtual void PostVisit(Statement*);
+  virtual void PreVisit(ExpressionStatement*);
+  virtual void PostVisit(ExpressionStatement*);
   virtual void PreVisit(Expression*);
   virtual void PostVisit(Expression*);
   virtual void PreVisit(LetStatement*);

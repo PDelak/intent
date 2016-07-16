@@ -11,8 +11,8 @@
 
 typeset_merger::typeset_merger()
 {
-  addRule("type", TYPE);
-  addRule("typeset", TYPESET);
+  addRule("syntax", TYPE);
+  addRule("grammar", TYPESET);
   addRule("property!", PROPERTY);
   addRule("=", ASSIGNMENT);
   addRule("([@a-zA-Z][a-zA-Z0-9_]+)", TEXTORID);

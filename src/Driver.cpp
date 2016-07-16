@@ -349,7 +349,7 @@ std::pair<std::string, std::string> compileDL(const std::string& filename)
   auto buffer = readFile(path.string().append(filename));
   std::vector<char> tmpBuffer;
   std::string typeset;
-  const std::string typeset_keyword = "typeset";
+  const std::string typeset_keyword = "grammar";
   
   auto typeset_it = std::search(buffer.begin(), 
                                 buffer.end(), 
@@ -391,7 +391,7 @@ std::pair<std::string, std::string> compileDL(const std::string& filename)
     //
     // add main production
     //
-    std::string mainProd = "  type main = ;\n]";    
+    std::string mainProd = "  syntax main = ;\n]";    
     auto it = std::find(tmpBuffer.rbegin(), tmpBuffer.rend(), ']');
     size_t size = std::distance(tmpBuffer.begin(), it.base());
     tmpBuffer.resize(size + mainProd.size() - 1);
@@ -544,6 +544,7 @@ auto make_builtin_reductions()
     { "*program_0*", program_reduction },
     { "*compound_statement_0*", compound_statement_reduction },
     { "*statement_0*", statement_reduction },
+    { "*expression_statement_0*", expression_statement_reduction },
     { "*expression_0*", expression_reduction },
     { "*if_statement_0*", if_reduction },
     { "*if_statement_1*", if_else_reduction },

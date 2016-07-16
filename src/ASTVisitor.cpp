@@ -32,6 +32,13 @@ void Statement::accept(Visitor* visitor)
   visitor->PostVisit(this);
 }
 
+void ExpressionStatement::accept(Visitor* visitor)
+{
+    visitor->PreVisit(this);
+    m_expression->user.p->accept(visitor);
+    visitor->PostVisit(this);
+}
+
 void Expression::accept(Visitor* visitor)
 {
   visitor->PreVisit(this);

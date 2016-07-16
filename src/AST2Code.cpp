@@ -43,6 +43,24 @@ void AST2Code::PostVisit(Statement* node)
   });
 }
 
+void AST2Code::PreVisit(ExpressionStatement* node)
+{
+    shift(stream);
+}
+
+void AST2Code::PostVisit(ExpressionStatement* node)
+{
+    reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+        std::string r;
+        for (size_t index = begin; index <= end; index++) {
+            r += stream[index].second;
+        }
+        r += ';';
+        return r;
+    });
+}
+
+
 void AST2Code::PreVisit(Expression* node)
 {
   shift(stream);

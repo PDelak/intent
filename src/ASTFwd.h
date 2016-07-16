@@ -27,6 +27,9 @@ typedef std::shared_ptr<Program> ProgramPtr;
 struct Statement;
 typedef std::shared_ptr<Statement> StatementPtr;
 
+struct ExpressionStatement;
+typedef std::shared_ptr<ExpressionStatement> ExpressionStatementPtr;
+
 struct Expression;
 typedef std::shared_ptr<Expression> ExpressionPtr;
 
