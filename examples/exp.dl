@@ -1,19 +1,19 @@
-let @x = 5
-let @y = 3
-let @z = @x+@y
+let x = 5;
+let y = 3;
+let z = x+y;
 
-@print (@z)
+print (z);
 
-function @str()
+function str()
 {
   return "world"
 }
 
-function @foo(@p : int , @p2 : int)
+function foo(p : int , p2 : int)
 {
-  @print(@p)
-  @print(@p2)
+  print(p);
+  print(p2);
 }
 
 
-@foo("str" 3+3)
+foo("str" 3+3);

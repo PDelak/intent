@@ -1,6 +1,6 @@
-typeset match = [
-  type matchExt = '|' identifier bin_op number '=' '{' code '}' ;  
-  type main = matchExt*;
+grammar match = [
+  syntax matchExt = '|' identifier bin_op number '=' '{' code '}' ;  
+  syntax main = matchExt*;
 ]
 
 match(main)
@@ -19,21 +19,21 @@ match(matchExt)
   }
 }
 
-let @x = 1
+let x = 1;
 
-| @x == 0 = {
-	 @print("@x == 0")	
+| x == 0 = {
+	 print("x == 0");
   }
 
 
-function @foo(@param : int) : int 
+function foo(param : int) : int 
 {
-  | @param == 0 = { @print(" == 0 ")}
-  | @param == 1 = { @print(" == 1 ")}
-  | @param >= 2 = { @print(" >= 2 ")}
-  @print(@param)
+  | param == 0 = { print(" == 0 ");}
+  | param == 1 = { print(" == 1 ");}
+  | param == 2 = { print(" == 2 ");}
+  print(param);
   return 1
 }
 
-@foo(1)
-@foo(2)
+foo(1);
+foo(2);

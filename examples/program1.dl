@@ -1,67 +1,67 @@
 {}
 {
-let @x1 = "hello world"
-let @x2 = "delak"
-let @x3 = "bolek"
-let @y = 1
-let @b = true
+let x1 = "hello world";
+let x2 = "delak";
+let x3 = "bolek";
+let y = 1;
+let b = true;
 
-@print (@x1)
-@print (@x2)
-@print (@x3)
-@print (@y)
-@print (@b)
+print (x1);
+print (x2);
+print (x3);
+print (y);
+print (b);
 
-let @e = 3+3
-let @f = 3<2
-@print (4*(4-2))
-let @e1 = true
-let @g = !@e1
+let e = 3+3;
+let f = 3<2;
+print (4*(4-2));
+let e1 = true;
+let g = !e1;
 
-if (@e == 6) {
-  @print (@x1)
-  @print (@x1)
-  let @y = 0
-  let @y = 0
+if (e == 6) {
+  print (x1);
+  print (x1);
+  let y = 0;
+  let y = 0;
 }
 
-while (@y == 1) { 
-  @print (@x1)
-  let @y = 0
+while (y == 1) { 
+  print (x1);
+  let y = 0;
 }
 
-for( @x = 1, 5, 1) {
-  @print ("hey")
+for( x = 1, 5, 1) {
+  print ("hey");
 
 }
 
 }
 
-function @foo(@param : int) : int 
+function foo(param : int) : int 
 {
-  let @x1 = "foo function"
-  @print (@x1)
+  let x1 = "foo function";
+  print (x1);
   return (10)
 }
 
-@print (@foo(1))
+print (foo(1));
 
-function @foo2(@param : int) : int 
+function foo2(param : int) : int 
 {
-  let @x1 = "foo2 function"
-  @print (@x1)
+  let x1 = "foo2 function";
+  print (x1);
 }
 
 
-@foo2(1)
+foo2(1);
 
-function @bar(@param : int, @param2 : int, @param3: int, @param4 : string) : int 
+function bar(param : int, param2 : int, param3: int, param4 : string) : int 
 {
-  @print (@param)
-  @print (@param2)
-  @print (@param3)
-  @print (@param4)
+  print (param);
+  print (param2);
+  print (param3);
+  print (param4);
 }
 
-@bar(10 20 30 "delak")
+bar(10 20 30 "delak");
 

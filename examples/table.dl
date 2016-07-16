@@ -1,12 +1,10 @@
-typeset basic = []
+let t3 = [1 = 5 2 = 6 "a" = "a" 3=[1=1 "next" = []]];
 
-let @t3 = [1 = 5 2 = 6 "a" = "a" 3=[1=1 "next" = []]]
+print(t3[1]);
+print(t3["a"]);
 
-@print(@t3[1])
-@print(@t3["a"])
-
-@t3[1] = @t3[1] + 1
-@print(@t3[1])
-@t3["a"] = "b444"
-@print(@t3["a"])
-@print(@t3[3])
+t3[1] = t3[1] + 1;
+print(t3[1]);
+t3["a"] = "b444";
+print(t3["a"]);
+print(t3[3]);

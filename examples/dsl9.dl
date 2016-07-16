@@ -1,16 +1,16 @@
-typeset basic = [
-  type main = p;
-  type p = s*;
-  type s = (map | tuple);
-  type tuple = 'tuple' '(' tuple_expr? (',' tuple_expr)* ')';
-  type tuple_expr = "[a-z]" ;
-  type map =   "[a-z0-9]+" ':' "[0-9]+" ;
+grammar basic = [
+  syntax main = p;
+  syntax p = s*;
+  syntax s = (map | tuple);
+  syntax tuple = 'tuple' '(' tuple_expr? (',' tuple_expr)* ')';
+  syntax tuple_expr = "[a-z]" ;
+  syntax map =   "[a-z0-9]+" ':' "[0-9]+" ;
 ]
 
 match(p) 
 {
   |  => {
-	@print ("p")
+	print ("p");
         $0
   }
 }
@@ -18,25 +18,25 @@ match(p)
 match(tuple) 
 {
   | 0 => {
-    @print ("tuple")
-    let @x = 5
-    if (@x == 5) @print(@x)
+    print ("tuple");
+    let x = 5;
+    if (x == 5) print(x);
   }
 }
 
 match(main)
 {
   | => {
-	@print ("main before")
+	print ("main before");
         $0
-	@print ("main after")
+	print ("main after");
   }
 }
 
 match(s)
 {
   | => {
-    @print("s")
+    print("s");
     $0
   }
 }
@@ -44,11 +44,11 @@ match(s)
 match(map)
 {
   | => {
-    @print("map")
+    print("map");
   }
 }
 
-@print("hello world")
+print("hello world");
 tuple (a, b, c, d)
 delak : 1
 bolek : 2

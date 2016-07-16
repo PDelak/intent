@@ -1,7 +1,7 @@
-typeset basic = [
-  type main = struct*;
-  type struct = id "[a-z]*";
-  type id = 'id' ;
+grammar basic = [
+  syntax main = struct*;
+  syntax struct = id "[a-z]*";
+  syntax id = 'id' ;
 ]
 
 match(main)

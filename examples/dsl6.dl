@@ -1,9 +1,9 @@
-typeset basic = 
+grammar basic = 
 [
-  type main = s*;
-  type s = (a b);
-  type a = 'a';
-  type b = 'b';
+  syntax main = s*;
+  syntax s = (a b);
+  syntax a = 'a';
+  syntax b = 'b';
 
 ]
 
@@ -17,8 +17,8 @@ match(main)
 match(s) 
 {
   |=> {    
-   for( @i = 1, 5, 1) {
-   	@print("$0.value ")
+   for( i = 1, 5, 1) {
+   	print("$0.value ");
    }
   }
 }

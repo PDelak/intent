@@ -1,15 +1,15 @@
-typeset basic = [
-  type main = p*;
-  type p = a | b;
-  type a = 'program';
-  type b = 'hello';
+grammar basic = [
+  syntax main = p*;
+  syntax p = a | b;
+  syntax a = 'program';
+  syntax b = 'hello';
 ]
 
 match(main)
 {
   | => { 
-        @print ("main")
-        $0
+        print ("main");
+        $0.value
 	
   }
 }
@@ -17,26 +17,26 @@ match(main)
 match(p)
 {
   | 0 => {
-        @print("p0")
-        $0
+        print("p0");
+        $0.value
   }
   | 1 => {
-        @print("p1")
-        $0
+        print("p1");
+        $0.value
   }
 }
 
 match (a) 
 {
-  | => { @print ("a 0") }
+  | => { print ("a 0"); }
 }
 
 match (b) 
 {
-  | => { @print ("b 0") }
+  | => { print ("b 0"); }
 }
 
 
-@print("hello")
+print("hello");
 
 program hello

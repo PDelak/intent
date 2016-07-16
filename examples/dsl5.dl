@@ -1,26 +1,26 @@
-typeset basic = [
-  type main = 'program' '{' p* '}';
-  type p = 'calc' '->' s;
-  type s = Mynumber op Mynumber;
-  type op = '+' | '-' | '*' | '/';
-  type Mynumber = "[0-9]*";
+grammar basic = [
+  syntax main = 'program' '{' p* '}';
+  syntax p = 'calc' '->' s;
+  syntax s = Mynumber op Mynumber;
+  syntax op = '+' | '-' | '*' | '/';
+  syntax Mynumber = "[0-9]*";
 ]
 
 match(main) {
   |=> {
-    let @index = 0
+    let index = 0;
     $2
-    @print("===============")
-    @print(@index)
+    print("===============");
+    print(index);
   } 
 }
 
 match(p) {
   |=> {
-    let @op = "$0.value "
-    @print (@op)
-    @print ( $2 )
-    @index = @index + 1
+    let op = "$0.value ";
+    print (op);
+    print ( $2 );
+    index = index + 1;
   }
 }
 

@@ -1,21 +1,21 @@
-typeset basic = [
-  type main = s*;
-  type s = "[:#,\-\.a-zA-Z0-9]*";
+grammar basic = [
+  syntax main = s*;
+  syntax s = "[:#,\-\.a-zA-Z0-9]*";
 ]
 
-let @counter = 0
+let counter = 0;
 
 match(main) {
   |=> {
     $0
-    @print(@counter)
+    print(counter);
   }
 }
 
 match(s) {
   |=> {
-     @print("$0.value ")
-     @counter = @counter + 1
+     print("$0.value ");
+     counter = counter + 1;
   }
 }
 
