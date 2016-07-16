@@ -14,11 +14,14 @@ grammar intent = [
               | for_loop
               | if_statement
               | return_statement
+              | semicolon_statement
               | match
               | extension 
               ) ;
 
   syntax expression_statement = expression ';';
+
+  syntax semicolon_statement = ';';  
 
   syntax expression = 
                 ( literal

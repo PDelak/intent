@@ -2,7 +2,7 @@ function foo(param : int) : int
 {
   print (param);
 
-  return 5
+  return 5;
 }
 
 function foo2(param : int, param2: bool) : bool 

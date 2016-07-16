@@ -45,7 +45,7 @@ List of currently supported types :
 
 ### Extensions
 
-In order to extend a language with specific grammar, a typeset has to be defined. Typeset is a kind of grammar plugin.
+In order to extend a language with specific grammar, a grammar plugin has to be defined. 
 Let's say that we would like to have a way to define state machines in a declarative way
 
 	statemachine basic
@@ -85,21 +85,21 @@ Let's say that we would like to have a way to define state machines in a declara
 	  }
 	}
 
-To handle such definition following typeset needs to be added
+To handle such definition following grammar needs to be added
 
-	typeset statemachine = [
-	  type main = stm stm_processor?;
-	  type stm = 'statemachine' "[a-zA-Z0-9]*" '{' config state* '}';
-	  type config = 'initialState' ':' "[a-zA-Z0-9]*";
-	  type state = 'state' "[a-zA-Z0-9]*" '{' transition entry* '}';
-	  type entry = (onEnter | onExit | onRead);
-	  type onEnter = 'onEnter' '(' "[a-zA-Z0-9]*" ')' '{' statement* '}';
-	  type onExit = 'onExit' '(' "[a-zA-Z0-9]*" ')' '{' statement* '}';
-	  type onRead = 'onRead' '(' "[a-zA-Z0-9]*" ')' '{' statement* '}';
-	  type stm_number = "[0-9]*";
-	  type stm_operator = '==' | '>=' | '<' | '>' | '<=';
-	  type transition = 'transition' ':' "[a-zA-Z0-9]*" 'when' stm_operator stm_number;
-	  type stm_processor = 'stm_process' identifier "[a-zA-Z0-9]*"; 
+	grammar statemachine = [
+	  syntax main = stm stm_processor?;
+	  syntax stm = 'statemachine' "[a-zA-Z0-9]*" '{' config state* '}';
+	  syntax config = 'initialState' ':' "[a-zA-Z0-9]*";
+	  syntax state = 'state' "[a-zA-Z0-9]*" '{' transition entry* '}';
+	  syntax entry = (onEnter | onExit | onRead);
+	  syntax onEnter = 'onEnter' '(' "[a-zA-Z0-9]*" ')' '{' statement* '}';
+	  syntax onExit = 'onExit' '(' "[a-zA-Z0-9]*" ')' '{' statement* '}';
+	  syntax onRead = 'onRead' '(' "[a-zA-Z0-9]*" ')' '{' statement* '}';
+	  syntax stm_number = "[0-9]*";
+	  syntax stm_operator = '==' | '>=' | '<' | '>' | '<=';
+	  syntax transition = 'transition' ':' "[a-zA-Z0-9]*" 'when' stm_operator stm_number;
+	  syntax stm_processor = 'stm_process' identifier "[a-zA-Z0-9]*"; 
 	]
 
 After that your program will "eat" grammar, but there is one additional step needed to have a working example - definition of code generator.
@@ -144,7 +144,7 @@ definition will lead to segfault (stm production contains only two nonterminals 
 		
 
 		
-	type stm = stm stm_processor?;
+	syntax stm = stm stm_processor?;
 
 
  * `line numbers in the case of parsing errors are missleading`
