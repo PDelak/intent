@@ -1,0 +1,41 @@
+grammar basic = [
+  syntax main = var*;
+  syntax var = 'var' symbol '=' num;
+  syntax symbol = "[a-zA-z][a-zA-z0-9_]*";
+  syntax num = "[0-9][0-9]*";
+]
+
+/*
+types.add[Int]
+types.add[Float]
+sema basic = [
+	[Int '+' Int], 
+	[Int '-' Int]
+]
+*/
+
+match(main)
+{
+  | => { 
+        $0
+  }
+}
+
+match(var)
+{
+  |=> {
+     let $1.value = $3.value;
+     if($1.value == "$3.value ") {
+
+        /*
+        type[x] = Int
+	symbolTable[currentScope] = x
+        staticAssert(!(symbolTable[currentScope].mutableRef && symbolTable[currentScope].Ref), "Cannot have mut & ref in the same scope")
+        */
+        
+        
+     } 
+  }
+}
+
+var x = 1
