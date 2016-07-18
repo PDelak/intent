@@ -336,8 +336,13 @@ void testFindingReferences()
 {
 }
 
+size_t countLines(const std::vector<char>& buf)
+{
+    return std::count(buf.begin(), buf.end(), '\n');
+}
+
 // return pair of metamodel (typeset) and model
-std::pair<std::string, std::string> compileDL(const std::string& filename)
+std::pair<std::string, std::string> compileDL(const std::string& filename, size_t& grammarSize)
 {
   auto path = std::tr2::sys::current_path().append("\\");
   auto intent_typeset = readFile(path.string().append("intenttypeset.dl"));
@@ -350,7 +355,7 @@ std::pair<std::string, std::string> compileDL(const std::string& filename)
   std::vector<char> tmpBuffer;
   std::string typeset;
   const std::string typeset_keyword = "grammar";
-  
+
   auto typeset_it = std::search(buffer.begin(), 
                                 buffer.end(), 
                                 typeset_keyword.c_str(), 
@@ -358,6 +363,11 @@ std::pair<std::string, std::string> compileDL(const std::string& filename)
 
   if (typeset_it != buffer.end()) {
     auto it = std::find(buffer.begin(), buffer.end(), '[');
+    auto end_grammar = std::find(buffer.begin(), buffer.end(), ']');
+
+    grammarSize = std::count(typeset_it, end_grammar, '\n');
+
+
     if (it != buffer.end()) {
       const char* intent_typeset_begin = &intent_typeset[0];
       const char* intent_typeset_end = &intent_typeset[0] + intent_typeset.size();
@@ -452,9 +462,29 @@ std::unordered_map<std::string, std::string> matchCases(ProgramPtr programPtr)
   return casesMap;
 }
 
+static void
+syntax_error_fn(struct D_Parser *ap) {
+    Parser *p = (Parser *)ap;
+    char *fn = d_dup_pathname_str(p->user.loc.pathname);
+    char *after = 0;
+    ZNode *z = p->snode_hash.last_all ? p->snode_hash.last_all->zns.v[0] : 0;
+    while (z && z->pn->parse_node.start_loc.s == z->pn->parse_node.end)
+        z = (z->sns.v && z->sns.v[0]->zns.v) ? z->sns.v[0]->zns.v[0] : 0;
+    if (z && z->pn->parse_node.start_loc.s != z->pn->parse_node.end)
+        after = dup_str(z->pn->parse_node.start_loc.s, z->pn->parse_node.end);
+    if (after)
+        fprintf(stderr, "%ssyntax error after '%s'\n", fn, after);
+    else
+        fprintf(stderr, "%ssyntax error\n", fn);
+    if (after)
+        FREE(after);
+    FREE(fn);
+}
+
 bool compileHelper(const std::string& metamodel,
                    const std::string& model,
-                   std::unordered_map<std::string, reductionf>& builtinRMappings)
+                   std::unordered_map<std::string, reductionf>& builtinRMappings,
+                   size_t grammarSize)
 {
   D_ParserTablesReader parser;
 
@@ -466,18 +496,19 @@ bool compileHelper(const std::string& metamodel,
   D_Parser *p = new_D_Parser(holder->parserTables, sizeof(NodeAdapter));
   p->save_parse_tree = 1;
   p->ambiguity_fn = amb;
+  p->syntax_error_fn = syntax_error_fn;
   std::string intermediate_file = "tmp.intent.lua";
   programPtr->setIntermediateName(intermediate_file);
 
   const char* b = model.c_str();
   const char* e = model.c_str() + model.size();
-
+  
   bool result = (dparse(p, const_cast<char*>(b), std::distance(b, e)) && !p->syntax_errors);
   
   std::stringstream ss;
-  ss << p->loc.line;
+  ss << p->loc.line + grammarSize;
   std::string msg = ss.str();
-  msg += " ";
+  msg += " line ";
 
   if (!result) throw SyntaxError(msg.c_str());
   return result;
@@ -487,9 +518,10 @@ bool compileHelper(const std::string& metamodel,
 
 void addDynamicReductions(const std::string& metamodel, 
                           const std::string& model, 
-                          std::unordered_map<std::string, reductionf>& builtinRMappings)
+                          std::unordered_map<std::string, reductionf>& builtinRMappings,
+                          size_t grammarSize)
 {
-  if (compileHelper(metamodel, model, builtinRMappings)) {
+  if (compileHelper(metamodel, model, builtinRMappings, grammarSize)) {
     auto dynamicReductions = make_dynamic_reductions();
 
     auto matches = matchCases(programPtr);
@@ -505,11 +537,12 @@ void addDynamicReductions(const std::string& metamodel,
 
 std::string visitMatchers(const std::string& metamodel, 
                           const std::string& model, 
-                          std::unordered_map<std::string, reductionf>& builtinRMappings)
+                          std::unordered_map<std::string, reductionf>& builtinRMappings,
+                          size_t grammarSize)
 {
   std::string code;
 
-  if (compileHelper(metamodel, model, builtinRMappings)) {
+  if (compileHelper(metamodel, model, builtinRMappings, grammarSize)) {
     std::ofstream out("matchers.out");
     AST2Code ast2CodeVisitor;
     programPtr->accept(&ast2CodeVisitor);
@@ -521,9 +554,10 @@ std::string visitMatchers(const std::string& metamodel,
 
 void Execute(const std::string& metamodel, 
              const std::string& model, 
-             std::unordered_map<std::string, reductionf>& builtinRMappings) 
+             std::unordered_map<std::string, reductionf>& builtinRMappings,
+             size_t grammarSize) 
 {
-  if (compileHelper(metamodel, model, builtinRMappings)) 
+  if (compileHelper(metamodel, model, builtinRMappings, grammarSize)) 
   {
     ASTNodeLinker nlinker;
     programPtr->accept(&nlinker);
@@ -608,13 +642,14 @@ int main(int argc, char *argv[]) {
     tests();
     std::string metamodel;
     std::string model;
-    std::tie(metamodel, model) = compileDL(fileName);
+    size_t grammarSize = 0;
+    std::tie(metamodel, model) = compileDL(fileName, grammarSize);
     
     serializeMetamodel(metamodel);
     DParser_pass("tmp.g");
-    addDynamicReductions("tmp.g.d_parser.c", model, builtinRMappings);
-    std::string codeGen = visitMatchers("tmp.g.d_parser.c", model, builtinRMappings);
-    if(!compileOnly) Execute("tmp.g.d_parser.c", codeGen, builtinRMappings);
+    addDynamicReductions("tmp.g.d_parser.c", model, builtinRMappings, grammarSize);
+    std::string codeGen = visitMatchers("tmp.g.d_parser.c", model, builtinRMappings, grammarSize);
+    if(!compileOnly) Execute("tmp.g.d_parser.c", codeGen, builtinRMappings, grammarSize);
   }  
   catch (const FileNotFoundException& fe) { std::cerr << fe.what() << std::endl; }
   catch (const SymbolNotFound& snf) { std::cerr << snf.what() << std::endl; }
