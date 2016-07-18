@@ -43,9 +43,10 @@
 extern D_ParserTables parser_tables_dparser_gram;
 extern ProgramPtr programPtr;
 std::unordered_map<size_t, std::pair<std::string, std::string>> IdToMatchCase;
+static std::string compilationUnit;
 
-#define MAX_LINE_LENGTH 44  /* must be at least 4 */
-#define INDENT_SPACES 4
+const int MAX_LINE_LENGTH = 44;  /* must be at least 4 */
+const int INDENT_SPACES = 4;
 
 void DParser_pass(char* path)
 {
@@ -459,9 +460,8 @@ std::unordered_map<std::string, std::string> matchCases(ProgramPtr programPtr)
 }
 
 static void
-syntax_error_fn(struct D_Parser *ap) {
+syntax_error_fn(struct D_Parser *ap) {    
     Parser *p = (Parser *)ap;
-    char *fn = d_dup_pathname_str(p->user.loc.pathname);
     char *after = 0;
     ZNode *z = p->snode_hash.last_all ? p->snode_hash.last_all->zns.v[0] : 0;
     while (z && z->pn->parse_node.start_loc.s == z->pn->parse_node.end)
@@ -469,15 +469,16 @@ syntax_error_fn(struct D_Parser *ap) {
     if (z && z->pn->parse_node.start_loc.s != z->pn->parse_node.end)
         after = dup_str(z->pn->parse_node.start_loc.s, z->pn->parse_node.end);
     if (after)
-        fprintf(stderr, "%ssyntax error after '%s'\n", fn, after);
+        fprintf(stderr, "%s : syntax error after '%s' in ", compilationUnit.c_str(), after);
     else
-        fprintf(stderr, "%ssyntax error\n", fn);
+        fprintf(stderr, "%s : syntax error ", compilationUnit.c_str());
     if (after)
         FREE(after);
-    FREE(fn);
 }
 
-bool compileHelper(const std::string& metamodel,
+
+bool compileHelper(const std::string& fileName,
+                   const std::string& metamodel,
                    const std::string& model,
                    std::unordered_map<std::string, reductionf>& builtinRMappings,
                    size_t grammarSize)
@@ -489,10 +490,11 @@ bool compileHelper(const std::string& metamodel,
     builtinRMappings);
 
   programPtr.reset(new Program);
-  D_Parser *p = new_D_Parser(holder->parserTables, sizeof(NodeAdapter));
+  D_Parser *p = new_D_Parser(holder->parserTables, sizeof(NodeAdapter));  
   p->save_parse_tree = 1;
   p->ambiguity_fn = amb;
   p->syntax_error_fn = syntax_error_fn;
+  
   std::string intermediate_file = "tmp.intent.lua";
   programPtr->setIntermediateName(intermediate_file);
 
@@ -512,12 +514,13 @@ bool compileHelper(const std::string& metamodel,
 }
 
 
-void addDynamicReductions(const std::string& metamodel, 
+void addDynamicReductions(const std::string& fileName,
+                          const std::string& metamodel, 
                           const std::string& model, 
                           std::unordered_map<std::string, reductionf>& builtinRMappings,
                           size_t grammarSize)
 {
-  if (compileHelper(metamodel, model, builtinRMappings, grammarSize)) {
+  if (compileHelper(fileName, metamodel, model, builtinRMappings, grammarSize)) {
     auto dynamicReductions = make_dynamic_reductions();
 
     auto matches = matchCases(programPtr);
@@ -531,14 +534,15 @@ void addDynamicReductions(const std::string& metamodel,
   }
 }
 
-std::string visitMatchers(const std::string& metamodel, 
+std::string visitMatchers(const std::string& fileName,
+                          const std::string& metamodel, 
                           const std::string& model, 
                           std::unordered_map<std::string, reductionf>& builtinRMappings,
                           size_t grammarSize)
 {
   std::string code;
 
-  if (compileHelper(metamodel, model, builtinRMappings, grammarSize)) {
+  if (compileHelper(fileName, metamodel, model, builtinRMappings, grammarSize)) {
     std::ofstream out("matchers.out");
     AST2Code ast2CodeVisitor;
     programPtr->accept(&ast2CodeVisitor);
@@ -548,12 +552,13 @@ std::string visitMatchers(const std::string& metamodel,
   return code;
 }
 
-void Execute(const std::string& metamodel, 
+void Execute(const std::string& fileName,
+             const std::string& metamodel, 
              const std::string& model, 
              std::unordered_map<std::string, reductionf>& builtinRMappings,
              size_t grammarSize) 
 {
-  if (compileHelper(metamodel, model, builtinRMappings, grammarSize)) 
+  if (compileHelper(fileName, metamodel, model, builtinRMappings, grammarSize)) 
   {
     ASTNodeLinker nlinker;
     programPtr->accept(&nlinker);
@@ -630,6 +635,7 @@ int main(int argc, char *argv[]) {
     option = argv[2]; 
   }
   std::string fileName = argv[1];
+  compilationUnit = fileName;
   bool showTree = false;
   bool compileOnly = false;
   if (option.compare("tree") == 0) showTree = true;
@@ -643,13 +649,13 @@ int main(int argc, char *argv[]) {
     
     serializeMetamodel(metamodel);
     DParser_pass("tmp.g");
-    addDynamicReductions("tmp.g.d_parser.c", model, builtinRMappings, grammarSize);
-    std::string codeGen = visitMatchers("tmp.g.d_parser.c", model, builtinRMappings, 0);
-    if(!compileOnly) Execute("tmp.g.d_parser.c", codeGen, builtinRMappings, 0);
+    addDynamicReductions(fileName, "tmp.g.d_parser.c", model, builtinRMappings, grammarSize);
+    std::string codeGen = visitMatchers(fileName, "tmp.g.d_parser.c", model, builtinRMappings, 0);
+    if(!compileOnly) Execute(fileName, "tmp.g.d_parser.c", codeGen, builtinRMappings, 0);
   }  
   catch (const FileNotFoundException& fe) { std::cerr << fe.what() << std::endl; }
   catch (const SymbolNotFound& snf) { std::cerr << snf.what() << std::endl; }
-  catch (const SyntaxError& se) { std::cerr << "compilation error : " << se.what() << std::endl;}
+  catch (const SyntaxError& se) { std::cerr << se.what() << std::endl;}
   catch (const SemanticError& semaError) { std::cerr << semaError.what() << std::endl; }
   catch (const std::runtime_error& re) { std::cerr << re.what() << std::endl; }
   catch (...) { std::cerr << "unknown error" << std::endl; }
