@@ -336,10 +336,6 @@ void testFindingReferences()
 {
 }
 
-size_t countLines(const std::vector<char>& buf)
-{
-    return std::count(buf.begin(), buf.end(), '\n');
-}
 
 // return pair of metamodel (typeset) and model
 std::pair<std::string, std::string> compileDL(const std::string& filename, size_t& grammarSize)
