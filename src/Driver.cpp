@@ -644,8 +644,8 @@ int main(int argc, char *argv[]) {
     serializeMetamodel(metamodel);
     DParser_pass("tmp.g");
     addDynamicReductions("tmp.g.d_parser.c", model, builtinRMappings, grammarSize);
-    std::string codeGen = visitMatchers("tmp.g.d_parser.c", model, builtinRMappings, grammarSize);
-    if(!compileOnly) Execute("tmp.g.d_parser.c", codeGen, builtinRMappings, grammarSize);
+    std::string codeGen = visitMatchers("tmp.g.d_parser.c", model, builtinRMappings, 0);
+    if(!compileOnly) Execute("tmp.g.d_parser.c", codeGen, builtinRMappings, 0);
   }  
   catch (const FileNotFoundException& fe) { std::cerr << fe.what() << std::endl; }
   catch (const SymbolNotFound& snf) { std::cerr << snf.what() << std::endl; }
