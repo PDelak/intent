@@ -46,74 +46,61 @@ List of currently supported types :
 ### Extensions
 
 In order to extend a language with specific grammar, a grammar plugin has to be defined. 
-Let's say that we would like to have a way to define state machines in a declarative way
-
-	statemachine basic
-	{
-	  initialState : below5
-
-	  state below5 {
-	    transition : above5 when >= 5
-	    onEnter
-	    {      
-	      print("Entering below5");
-	    }
-	    onExit
-	    {
-	      print("Exitting below5");
-	    }
-	    onRead
-	    {
-	      print("Reading below5");
-	    }
-	  }
-
-	  state above5 {
-	    transition : below5 when < 5
-	    onEnter
-	    {      
-	      print("Entering above5");
-	    }
-	    onExit
-	    {
-	      print("Exitting above5");
-	    }
-	    onRead
-	    {
-	      print("Reading above5");
-	    }
-	  }
-	}
+For this reason a simple calculator will be implemented
+		
+		program
+		{
+			calc -> 44+5 
+			calc -> 55+5
+			calc -> 55-3
+			calc -> 55/5
+			calc -> 5*5
+		}
 
 To handle such definition following grammar needs to be added
 
-	grammar statemachine = [
-	  syntax main = stm stm_processor?;
-	  syntax stm = 'statemachine' "[a-zA-Z0-9]*" '{' config state* '}';
-	  syntax config = 'initialState' ':' "[a-zA-Z0-9]*";
-	  syntax state = 'state' "[a-zA-Z0-9]*" '{' transition entry* '}';
-	  syntax entry = (onEnter | onExit | onRead);
-	  syntax onEnter = 'onEnter' '(' "[a-zA-Z0-9]*" ')' '{' statement* '}';
-	  syntax onExit = 'onExit' '(' "[a-zA-Z0-9]*" ')' '{' statement* '}';
-	  syntax onRead = 'onRead' '(' "[a-zA-Z0-9]*" ')' '{' statement* '}';
-	  syntax stm_number = "[0-9]*";
-	  syntax stm_operator = '==' | '>=' | '<' | '>' | '<=';
-	  syntax transition = 'transition' ':' "[a-zA-Z0-9]*" 'when' stm_operator stm_number;
-	  syntax stm_processor = 'stm_process' identifier "[a-zA-Z0-9]*"; 
-	]
+		grammar basic = [
+			syntax main = 'program' '{' p* '}';
+  			syntax p = 'calc' '->' s;
+  			syntax s = Mynumber op Mynumber;
+  			syntax op = '+' | '-' | '*' | '/';
+  			syntax Mynumber = "[0-9]*";
+		]
+
 
 After that your program will "eat" grammar, but there is one additional step needed to have a working example - definition of code generator.
-To do that, we have to define set of matchers that will match specific productions. Below onEnter match definition.
+To do that, we have to define set of matchers that will match specific productions. 
 
-	match(onEnter)
-	{
-	   |=> {
-	      "onEnter" = function () 
-	      {      
-	        $2.value      
-	      }
-	   }
-	}
+		match(main) {
+  			|=> {
+     			$2;
+  			} 
+		}
+
+		match(p) {
+			|=> {
+     			$2;
+     			print (value);
+			}
+		}
+
+		match(s)
+		{
+		  |=> {
+		     print("calc");
+		     print($0.value);
+		     print("$1.value");
+		     print($2.value);
+		     op = "$1.value";
+		     if(op == "+ ") value = $0.value + $2.value;
+		     if(op == "- ") value = $0.value - $2.value;
+		     if(op == "* ") value = $0.value * $2.value;
+		     if(op == "/ ") value = $0.value / $2.value;
+		  }
+		}
+
+
+
 
 ### Platforms
 
