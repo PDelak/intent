@@ -337,6 +337,18 @@ void testFindingReferences()
 {
 }
 
+size_t countGrammarLines(const std::vector<char>& buffer)
+{
+    type_parser tp;
+    auto it = std::find(buffer.begin(), buffer.end(), '[');
+    std::string buf;
+    std::copy(buffer.begin(), buffer.end(), std::back_inserter(buf));
+    std::string gram;
+    size_t pos = tp.parse(buf.c_str(), buf.c_str() + buf.size(), gram);
+
+    return std::count(buf.c_str(), buf.c_str() + pos, '\n');
+
+}
 
 // return pair of metamodel (typeset) and model
 std::pair<std::string, std::string> compileDL(const std::string& filename, size_t& grammarSize)
@@ -345,7 +357,6 @@ std::pair<std::string, std::string> compileDL(const std::string& filename, size_
   auto intent_typeset = readFile(path.string().append("intenttypeset.dl"));
 
   type_parser tp;
-  type_parser tp2;
   typeset_merger tpm;
   std::string model;
   size_t pos = 0;
@@ -360,14 +371,9 @@ std::pair<std::string, std::string> compileDL(const std::string& filename, size_
                                 typeset_keyword.c_str() + typeset_keyword.size());
 
   if (typeset_it != buffer.end()) {
+    
     auto it = std::find(buffer.begin(), buffer.end(), '[');
-    std::string buf;
-    std::copy(buffer.begin(), buffer.end(), std::back_inserter(buf));
-    std::string gram;
-    size_t pos = tp2.parse(buf.c_str(), buf.c_str() + buf.size(), gram);
-
-    grammarSize = std::count(buf.c_str(), buf.c_str() + pos, '\n');
-
+    grammarSize = countGrammarLines(buffer);
 
     if (it != buffer.end()) {
       const char* intent_typeset_begin = &intent_typeset[0];
