@@ -6,7 +6,7 @@ grammar basic = [
 match(main)
 {
   |=> {
-    $0
+    $0;
   }
 }
 
@@ -18,11 +18,11 @@ match(s)
         if ( x == "a") print("hello");
   }
   | 1 => {
-        $0.value
+        
         print("$0.value");
   }
   | 2 => {
-        $0.value
+   
         print("$0.value");
   }
 }

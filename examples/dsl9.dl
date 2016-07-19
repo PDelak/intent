@@ -11,7 +11,7 @@ match(p)
 {
   |  => {
 	print ("p");
-        $0
+        $0;
   }
 }
 
@@ -28,7 +28,7 @@ match(main)
 {
   | => {
 	print ("main before");
-        $0
+        $0;
 	print ("main after");
   }
 }
@@ -37,7 +37,7 @@ match(s)
 {
   | => {
     print("s");
-    $0
+    $0;
   }
 }
 

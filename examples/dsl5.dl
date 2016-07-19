@@ -6,37 +6,37 @@ grammar basic = [
   syntax Mynumber = "[0-9]*";
 ]
 
+let value = 0;
+let op = "";
+
 match(main) {
   |=> {
-    let index = 0;
-    $2
-    print("===============");
-    print(index);
+     $2;
   } 
 }
 
 match(p) {
   |=> {
-    let op = "$0.value ";
-    print (op);
-    print ( $2 );
-    index = index + 1;
+     $2;
+     print (value);
   }
 }
 
 match(s)
 {
   |=> {
-     $0 $1.value $2
+     print("calc");
+     print($0.value);
+     print("$1.value");
+     print($2.value);
+     op = "$1.value";
+     if(op == "+ ") value = $0.value + $2.value;
+     if(op == "- ") value = $0.value - $2.value;
+     if(op == "* ") value = $0.value * $2.value;
+     if(op == "/ ") value = $0.value / $2.value;
   }
 }
 
-match(Mynumber)
-{
-  |=> {
-    $0.value
-  }
-}
 
 program
 {

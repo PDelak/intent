@@ -345,6 +345,7 @@ std::pair<std::string, std::string> compileDL(const std::string& filename, size_
   auto intent_typeset = readFile(path.string().append("intenttypeset.dl"));
 
   type_parser tp;
+  type_parser tp2;
   typeset_merger tpm;
   std::string model;
   size_t pos = 0;
@@ -360,9 +361,12 @@ std::pair<std::string, std::string> compileDL(const std::string& filename, size_
 
   if (typeset_it != buffer.end()) {
     auto it = std::find(buffer.begin(), buffer.end(), '[');
-    auto end_grammar = std::find(buffer.begin(), buffer.end(), ']');
+    std::string buf;
+    std::copy(buffer.begin(), buffer.end(), std::back_inserter(buf));
+    std::string gram;
+    size_t pos = tp2.parse(buf.c_str(), buf.c_str() + buf.size(), gram);
 
-    grammarSize = std::count(typeset_it, end_grammar, '\n');
+    grammarSize = std::count(buf.c_str(), buf.c_str() + pos, '\n');
 
 
     if (it != buffer.end()) {

@@ -6,7 +6,7 @@ grammar basic = [
 match(main) 
 {
   |=> {
-    $0
+    $0;
   }
 }
 

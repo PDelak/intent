@@ -39,6 +39,12 @@ template<> struct ast_type_checker<Expression>
   static bool is(Node* p)   { return ExpressionAST == p->getId(); }
 };
 
+template<> struct ast_type_checker<ExpressionStatement>
+{
+    static bool is(NodePtr p) { return ExpressionStatementAST == p->getId(); }
+    static bool is(Node* p) { return ExpressionStatementAST == p->getId(); }
+};
+
 template<> struct ast_type_checker<LetStatement>      
 { 
   static bool is(NodePtr p) { return LetStatementAST == p->getId(); } 

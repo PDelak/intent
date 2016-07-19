@@ -1,3 +1,9 @@
+grammar basic = [
+  syntax main = 'let' 'ptr' 'x' '=' 'new' '5';
+]
+
 let x = "hello";
 let y = 1;
 let z = true;
+
+let ptr x = new 5;

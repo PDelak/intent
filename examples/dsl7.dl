@@ -7,8 +7,9 @@ let counter = 0;
 
 match(main) {
   |=> {
-    $0
+    $0;
     print(counter);
+    
   }
 }
 

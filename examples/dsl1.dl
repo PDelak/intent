@@ -9,7 +9,7 @@ match(main)
 {
   | => { 
         print ("main");
-        $0.value
+        $0.value;
 	
   }
 }
@@ -18,11 +18,11 @@ match(p)
 {
   | 0 => {
         print("p0");
-        $0.value
+        $0.value;
   }
   | 1 => {
         print("p1");
-        $0.value
+        $0.value;
   }
 }
 

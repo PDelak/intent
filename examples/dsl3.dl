@@ -1,8 +1,8 @@
-typeset basic = [
-  type main = map*;
-  type map =   key ':' value ;
-  type key =  "[a-z0-9]+";
-  type value = "[0-9]+";
+grammar basic = [
+  syntax main = map*;
+  syntax map =   key ':' value ;
+  syntax key =  "[a-z0-9]+";
+  syntax value = "[0-9]+";
 ]
 
 match(main) 

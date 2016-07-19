@@ -1,12 +1,12 @@
 let x = 5;
 let y = 3;
 let z = x+y;
-
+;;;
 print (z);
 
 function str()
 {
-  return "world"
+  return "world";
 }
 
 function foo(p : int , p2 : int)

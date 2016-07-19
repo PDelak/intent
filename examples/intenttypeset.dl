@@ -23,13 +23,17 @@ grammar intent = [
 
   syntax semicolon_statement = ';';  
 
+
   syntax expression = 
                 ( literal
                 | bin_expr 
                 | unary_expression
                 | function_call
                 | table 
-                | function_expression) ;
+                | function_expression
+                | meta_expression) ;
+
+  syntax meta_expression = '$' number '.value'?;
 
   syntax if_statement =   'if' '(' expression ')' statement property!(right, 6000)
                        | 'if' '(' expression ')' statement 'else' statement property!(right,6100);
@@ -111,8 +115,8 @@ grammar intent = [
 
   syntax match = 'match' '(' match_id ')' '{' match_case + '}' ;
 
-  syntax code = "[\+\-;:,_<>$@#=a-zA-Z0-9{} \t\(\)\"\?\.\^\[\]]"*;
- 
+  syntax code = statement*;
+
   syntax match_case = '|' number? '=>' '{' code '}';
 
   syntax extension = main;

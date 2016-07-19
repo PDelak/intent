@@ -17,14 +17,13 @@ sema basic = [
 match(main)
 {
   | => { 
-        $0
+        $0;
   }
 }
 
 match(var)
 {
   |=> {
-     let $1.value = $3.value;
      if($1.value == "$3.value ") {
 
         /*

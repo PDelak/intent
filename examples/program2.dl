@@ -1,9 +1,7 @@
 grammar basic = [
-
   syntax main = s*;
   syntax s = 'hello' ('delak' | 'misiek');
 ]
-
 {}
 {
 let x1 = "hello world";

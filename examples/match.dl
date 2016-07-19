@@ -6,7 +6,8 @@ grammar match = [
 match(main)
 { 
   |=> {
-     $0
+  $0; 
+  let z = 1;
   }
 }
 
@@ -14,7 +15,7 @@ match(matchExt)
 {
   |=> {
      if($1.value == $3.value) {
-       $6.value
+       $6.value;
      } 
   }
 }
