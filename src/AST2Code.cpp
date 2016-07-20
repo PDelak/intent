@@ -12,12 +12,12 @@ AST2Code::AST2Code() {}
 
 void AST2Code::PreVisit(Program* node) 
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(Program* node) 
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     for (size_t index = begin; index <= end; index++) {
       r += stream[index].second;
@@ -28,12 +28,12 @@ void AST2Code::PostVisit(Program* node)
 
 void AST2Code::PreVisit(Statement* node) 
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(Statement* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     for (size_t index = begin; index <= end; index++) {
       r += stream[index].second;
@@ -45,12 +45,12 @@ void AST2Code::PostVisit(Statement* node)
 
 void AST2Code::PreVisit(ExpressionStatement* node)
 {
-    shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(ExpressionStatement* node)
 {
-    reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+    reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
         std::string r;
         for (size_t index = begin; index <= end; index++) {
             r += stream[index].second;
@@ -63,12 +63,12 @@ void AST2Code::PostVisit(ExpressionStatement* node)
 
 void AST2Code::PreVisit(Expression* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(Expression* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     for (size_t index = begin; index <= end; index++) {
       r += stream[index].second;
@@ -79,12 +79,12 @@ void AST2Code::PostVisit(Expression* node)
 
 void AST2Code::PreVisit(LetStatement* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(LetStatement* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;    
     size_t index = begin;
 
@@ -101,12 +101,12 @@ void AST2Code::PostVisit(LetStatement* node)
 
 void AST2Code::PreVisit(Identifier* node) 
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(Identifier* node) 
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r = node->getIdentifier();
     return r;
 
@@ -115,12 +115,12 @@ void AST2Code::PostVisit(Identifier* node)
 
 void AST2Code::PreVisit(StringExpr* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(StringExpr* node)
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r = node->getValue();
     return r;
   });
@@ -128,12 +128,12 @@ void AST2Code::PostVisit(StringExpr* node)
 
 void AST2Code::PreVisit(Literal* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(Literal* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     for (size_t index = begin; index <= end; index++) {
       r += stream[index].second;
@@ -145,12 +145,12 @@ void AST2Code::PostVisit(Literal* node)
 
 void AST2Code::PreVisit(NumberExpr* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(NumberExpr* node)
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r = node->getValue();
     return r;
   });
@@ -158,12 +158,12 @@ void AST2Code::PostVisit(NumberExpr* node)
 
 void AST2Code::PreVisit(BoolExpr* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(BoolExpr* node)
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r = node->getValue();
     return r;
   });
@@ -171,12 +171,12 @@ void AST2Code::PostVisit(BoolExpr* node)
 
 void AST2Code::PreVisit(TypeName* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(TypeName* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     for (size_t index = begin; index <= end; index++) {
       r += stream[index].second;
@@ -187,12 +187,12 @@ void AST2Code::PostVisit(TypeName* node)
 
 void AST2Code::PreVisit(Parameter* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(Parameter* node)
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     r += node->getIdentifier();
     if (node->getType()) 
@@ -208,12 +208,12 @@ void AST2Code::PostVisit(Parameter* node)
 
 void AST2Code::PreVisit(FunctionBody* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(FunctionBody* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     for (size_t index = begin; index <= end; index++) {
       r += stream[index].second;
@@ -224,12 +224,12 @@ void AST2Code::PostVisit(FunctionBody* node)
 
 void AST2Code::PreVisit(FunctionDecl* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(FunctionDecl* node)
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     size_t index = begin;
     D_ParseNode *xpn = d_get_child(node->getIdentifierPtr(), 0);
@@ -252,12 +252,12 @@ void AST2Code::PostVisit(FunctionDecl* node)
 
 void AST2Code::PreVisit(FunctionExpr* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(FunctionExpr* node)
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     size_t index = begin;
     size_t size = end - begin;
@@ -277,12 +277,12 @@ void AST2Code::PostVisit(FunctionExpr* node)
 
 void AST2Code::PreVisit(FunctionCall* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(FunctionCall* node)
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     std::string id = std::string(node->getIdentifier()->start_loc.s, node->getIdentifier()->end);
     size_t size = end - begin;
@@ -302,12 +302,12 @@ void AST2Code::PostVisit(FunctionCall* node)
 
 void AST2Code::PreVisit(CompoundStatement* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(CompoundStatement* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     r += "{\n";
     for (size_t index = begin; index <= end; index++) {
@@ -320,12 +320,12 @@ void AST2Code::PostVisit(CompoundStatement* node)
 
 void AST2Code::PreVisit(Argument* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(Argument* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     for (size_t index = begin; index <= end; index++) {
       r += stream[index].second;
@@ -336,12 +336,12 @@ void AST2Code::PostVisit(Argument* node)
 
 void AST2Code::PreVisit(ParenExpression* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(ParenExpression* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     r += "(";
     r += stream[begin].second;
@@ -352,12 +352,12 @@ void AST2Code::PostVisit(ParenExpression* node)
 
 void AST2Code::PreVisit(BinaryExpression* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(BinaryExpression* node)
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     r += stream[begin].second;
     r += node->getOperator();
@@ -369,12 +369,12 @@ void AST2Code::PostVisit(BinaryExpression* node)
 
 void AST2Code::PreVisit(WhileLoop* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(WhileLoop* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     assert((end - begin) == 1);
     std::string r;    
     r += "while (";
@@ -387,12 +387,12 @@ void AST2Code::PostVisit(WhileLoop* node)
 
 void AST2Code::PreVisit(ForLoop* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(ForLoop* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     assert((end - begin) == 3);
     std::string r;
     r += "for (";
@@ -409,12 +409,12 @@ void AST2Code::PostVisit(ForLoop* node)
 
 void AST2Code::PreVisit(IfStatement* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(IfStatement* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     size_t size = end - begin;
     std::string r;
     
@@ -429,12 +429,12 @@ void AST2Code::PostVisit(IfStatement* node)
 
 void AST2Code::PreVisit(UnaryExpression* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(UnaryExpression* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     for (size_t index = begin; index <= end; index++) {
       r += stream[index].second;
@@ -445,12 +445,12 @@ void AST2Code::PostVisit(UnaryExpression* node)
 
 void AST2Code::PreVisit(ReturnStatement* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(ReturnStatement* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     assert((end - begin) == 0);
     std::string r;
     
@@ -470,7 +470,7 @@ void AST2Code::PostVisit(NullStatement* node)
 
 void AST2Code::PreVisit(MatchStatement*) 
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(MatchStatement* node) 
@@ -478,7 +478,7 @@ void AST2Code::PostVisit(MatchStatement* node)
   // Escape MatchStatement
   // Everything inside MatchStatement should be escaped and not visible
   // in generated output
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r = "";
     return r;
   });
@@ -492,12 +492,12 @@ void AST2Code::PostVisit(MatchCase*) {}
 
 void AST2Code::PreVisit(Extension*) 
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(Extension* node) 
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     for (size_t index = begin; index <= end; index++) {
       r += stream[index].second;
@@ -508,12 +508,12 @@ void AST2Code::PostVisit(Extension* node)
 
 void AST2Code::PreVisit(DynamicNode* node) 
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(DynamicNode* node) 
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r = node->generateCode();
     return r;
   });
@@ -521,12 +521,12 @@ void AST2Code::PostVisit(DynamicNode* node)
 
 void AST2Code::PreVisit(TableExpression* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(TableExpression* node)
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r = "[";
     for (size_t index = begin; index <= end; index++) {
       if (index >= (begin + 1)) {
@@ -541,12 +541,12 @@ void AST2Code::PostVisit(TableExpression* node)
 
 void AST2Code::PreVisit(TableElement*)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void AST2Code::PostVisit(TableElement* node)
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r = "[";
     for (size_t index = begin; index <= end; index++) {
       r += stream[index].second;

@@ -24,18 +24,22 @@ std::pair<size_t, size_t> getRange(const Stream& stream)
   return std::make_pair(beginIndex, endIndex);
 }
 
-template<typename Stream>
+// pushes ObjectType argument on the stack, currently named Stream
+template<typename ObjectType, typename Stream>
 void shift(Stream& stream)
 {
-  stream.push_back(std::make_pair(nullptr, ""));
+  ObjectType ot;
+  stream.push_back(std::make_pair(nullptr, ot));
 }
 
-template<typename Stream, typename ReduceFunction>
-void reduce(Stream& stream, Node* node, ReduceFunction f)
+// get specified number of arguments from the stack and call supplied 
+// user callback function - reduceFunction for customization
+template<typename ObjectType, typename Stream, typename reduceFunction>
+void reduce(Stream& stream, Node* node, reduceFunction f)
 {
   size_t begin, end;
   std::tie(begin, end) = getRange(stream);
-  std::string reducedStream;
+  ObjectType reducedStream;
   
   reducedStream = f(stream, begin + 1, end);
   

@@ -12,12 +12,12 @@ SemanticChecker::SemanticChecker() {}
 
 void SemanticChecker::PreVisit(Program* node) 
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(Program* node) 
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     for (size_t index = begin; index <= end; index++) {
       r += stream[index].second;
@@ -28,12 +28,12 @@ void SemanticChecker::PostVisit(Program* node)
 
 void SemanticChecker::PreVisit(Statement* node) 
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(Statement* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     for (size_t index = begin; index <= end; index++) {
       r += stream[index].second;
@@ -45,12 +45,12 @@ void SemanticChecker::PostVisit(Statement* node)
 
 void SemanticChecker::PreVisit(Expression* node)
 {
-  shift(stream);
+    shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(Expression* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     for (size_t index = begin; index <= end; index++) {
       r += stream[index].second;
@@ -61,12 +61,12 @@ void SemanticChecker::PostVisit(Expression* node)
 
 void SemanticChecker::PreVisit(LetStatement* node)
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(LetStatement* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;    
     size_t index = begin;
 
@@ -83,12 +83,12 @@ void SemanticChecker::PostVisit(LetStatement* node)
 
 void SemanticChecker::PreVisit(Identifier* node) 
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(Identifier* node) 
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r = node->getIdentifier();
     return r;
 
@@ -97,12 +97,12 @@ void SemanticChecker::PostVisit(Identifier* node)
 
 void SemanticChecker::PreVisit(StringExpr* node)
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(StringExpr* node)
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r = node->getValue();
     return r;
   });
@@ -110,12 +110,12 @@ void SemanticChecker::PostVisit(StringExpr* node)
 
 void SemanticChecker::PreVisit(Literal* node)
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(Literal* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     for (size_t index = begin; index <= end; index++) {
       r += stream[index].second;
@@ -127,12 +127,12 @@ void SemanticChecker::PostVisit(Literal* node)
 
 void SemanticChecker::PreVisit(NumberExpr* node)
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(NumberExpr* node)
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r = node->getValue();
     return r;
   });
@@ -140,12 +140,12 @@ void SemanticChecker::PostVisit(NumberExpr* node)
 
 void SemanticChecker::PreVisit(BoolExpr* node)
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(BoolExpr* node)
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r = node->getValue();
     return r;
   });
@@ -153,12 +153,12 @@ void SemanticChecker::PostVisit(BoolExpr* node)
 
 void SemanticChecker::PreVisit(TypeName* node)
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(TypeName* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     for (size_t index = begin; index <= end; index++) {
       r += stream[index].second;
@@ -169,12 +169,12 @@ void SemanticChecker::PostVisit(TypeName* node)
 
 void SemanticChecker::PreVisit(Parameter* node)
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(Parameter* node)
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     r += node->getIdentifier();
     if (node->getType()) 
@@ -190,12 +190,12 @@ void SemanticChecker::PostVisit(Parameter* node)
 
 void SemanticChecker::PreVisit(FunctionBody* node)
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(FunctionBody* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     for (size_t index = begin; index <= end; index++) {
       r += stream[index].second;
@@ -206,12 +206,12 @@ void SemanticChecker::PostVisit(FunctionBody* node)
 
 void SemanticChecker::PreVisit(FunctionDecl* node)
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(FunctionDecl* node)
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     size_t index = begin;
     D_ParseNode *xpn = d_get_child(node->getIdentifierPtr(), 0);
@@ -234,12 +234,12 @@ void SemanticChecker::PostVisit(FunctionDecl* node)
 
 void SemanticChecker::PreVisit(FunctionCall* node)
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(FunctionCall* node)
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     std::string id = std::string(node->getIdentifier()->start_loc.s, node->getIdentifier()->end);
     size_t size = end - begin;
@@ -259,12 +259,12 @@ void SemanticChecker::PostVisit(FunctionCall* node)
 
 void SemanticChecker::PreVisit(CompoundStatement* node)
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(CompoundStatement* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     r += "{\n";
     for (size_t index = begin; index <= end; index++) {
@@ -277,12 +277,12 @@ void SemanticChecker::PostVisit(CompoundStatement* node)
 
 void SemanticChecker::PreVisit(Argument* node)
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(Argument* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     for (size_t index = begin; index <= end; index++) {
       r += stream[index].second;
@@ -293,12 +293,12 @@ void SemanticChecker::PostVisit(Argument* node)
 
 void SemanticChecker::PreVisit(ParenExpression* node)
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(ParenExpression* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     r += "(";
     r += stream[begin].second;
@@ -309,12 +309,12 @@ void SemanticChecker::PostVisit(ParenExpression* node)
 
 void SemanticChecker::PreVisit(BinaryExpression* node)
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(BinaryExpression* node)
 {
-  reduce(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [=](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     r += stream[begin].second;
     r += node->getOperator();
@@ -326,12 +326,12 @@ void SemanticChecker::PostVisit(BinaryExpression* node)
 
 void SemanticChecker::PreVisit(WhileLoop* node)
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(WhileLoop* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     assert((end - begin) == 1);
     std::string r;    
     r += "while (";
@@ -344,12 +344,12 @@ void SemanticChecker::PostVisit(WhileLoop* node)
 
 void SemanticChecker::PreVisit(ForLoop* node)
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(ForLoop* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     assert((end - begin) == 3);
     std::string r;
     r += "for (";
@@ -366,12 +366,12 @@ void SemanticChecker::PostVisit(ForLoop* node)
 
 void SemanticChecker::PreVisit(IfStatement* node)
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(IfStatement* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     size_t size = end - begin;
     std::string r;
     
@@ -386,12 +386,12 @@ void SemanticChecker::PostVisit(IfStatement* node)
 
 void SemanticChecker::PreVisit(UnaryExpression* node)
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(UnaryExpression* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     std::string r;
     for (size_t index = begin; index <= end; index++) {
       r += stream[index].second;
@@ -402,12 +402,12 @@ void SemanticChecker::PostVisit(UnaryExpression* node)
 
 void SemanticChecker::PreVisit(ReturnStatement* node)
 {
-  shift(stream);
+  shift<std::string>(stream);
 }
 
 void SemanticChecker::PostVisit(ReturnStatement* node)
 {
-  reduce(stream, node, [](const Stream& stream, size_t begin, size_t end) {
+  reduce<std::string>(stream, node, [](const Stream& stream, size_t begin, size_t end) {
     assert((end - begin) == 0);
     std::string r;
     
