@@ -1,0 +1,13 @@
+grammar log = [
+  syntax main = Mynumber '-' Mynumber '-' Mynumber "[a-z]*";
+  syntax Mynumber = "[0-9]*";
+]
+
+match(main) {
+  |=> {
+     print("\nYear:"  .. "\t$0.value");
+     print("\nMonth:" .. "\t$2.value");
+     print("\nDay:"   .. "\t$4.value");
+     print("\nMsg:"   .. "\t$5.value");
+  } 
+}

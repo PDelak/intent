@@ -1,0 +1,8 @@
+function foo(x, n1 , y , n2)
+{
+  print(x);
+  print(y);
+}
+
+let x = "hello world";
+foo ("hello" 1 "world" 2);

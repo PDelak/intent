@@ -1,0 +1,8 @@
+program
+{
+	calc -> 44+5 
+	calc -> 55+5
+	calc -> 55-3
+	calc -> 55/5
+	calc -> 5*5
+}
