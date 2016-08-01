@@ -12,8 +12,6 @@
 #include "Visitor.h"
 #include "AST.h"
 
-typedef std::vector<std::pair<Node*, std::string>> Stream;
-
 struct SemanticChecker : public Visitor
 {
   SemanticChecker();
@@ -76,12 +74,12 @@ struct SemanticChecker : public Visitor
   virtual void PreVisit(Extension*);
   virtual void PostVisit(Extension*);
 
-  std::string serialize() const {
-    return stream[0].second;
+  TypePtr serialize() const {
+    return TypePtr(new type);
   }
 
 private:
-  std::vector<std::pair<Node*, std::string>> stream;
+  std::vector<std::pair<Node*, TypePtr>> stream;
 
 
 };
