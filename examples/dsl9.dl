@@ -10,7 +10,7 @@ grammar basic = [
 match(p) 
 {
   |  => {
-	print ("p");
+	print ("\np");
         $0;
   }
 }
@@ -18,25 +18,25 @@ match(p)
 match(tuple) 
 {
   | 0 => {
-    print ("tuple");
+    print ("\ntuple");
     let x = 5;
-    if (x == 5) print(x);
+    if (x == 5) print("\n" .. x);
   }
 }
 
 match(main)
 {
   | => {
-	print ("main before");
+	print ("\nmain before");
         $0;
-	print ("main after");
+	print ("\nmain after");
   }
 }
 
 match(s)
 {
   | => {
-    print("s");
+    print("\ns");
     $0;
   }
 }
@@ -44,7 +44,7 @@ match(s)
 match(map)
 {
   | => {
-    print("map");
+    print("\nmap");
   }
 }
 

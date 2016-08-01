@@ -6,9 +6,6 @@ grammar basic = [
   syntax Mynumber = "[0-9]*";
 ]
 
-let value = 0;
-let op = "";
-
 match(main) {
   |=> {
      $2;
@@ -18,16 +15,18 @@ match(main) {
 match(p) {
   |=> {
      $2;
+     print (" = ");
      print (value);
+     print ("\n");
   }
 }
 
 match(s)
 {
   |=> {
-     print("calc");
+     print("calc ");
      print($0.value);
-     print("$1.value");
+     print(" $1.value ");
      print($2.value);
      op = "$1.value";
      if(op == "+ ") value = $0.value + $2.value;
@@ -37,6 +36,8 @@ match(s)
   }
 }
 
+let value = 0;
+let op = "";
 
 program
 {

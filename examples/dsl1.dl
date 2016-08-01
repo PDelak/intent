@@ -8,7 +8,7 @@ grammar basic = [
 match(main)
 {
   | => { 
-        print ("main");
+        print ("\nmain");
         $0.value;
 	
   }
@@ -17,26 +17,26 @@ match(main)
 match(p)
 {
   | 0 => {
-        print("p0");
+        print("\np0");
         $0.value;
   }
   | 1 => {
-        print("p1");
+        print("\np1");
         $0.value;
   }
 }
 
 match (a) 
 {
-  | => { print ("a 0"); }
+  | => { print ("\na 0"); }
 }
 
 match (b) 
 {
-  | => { print ("b 0"); }
+  | => { print ("\nb 0"); }
 }
 
 
-print("hello");
+print("\nhello " .. "world");
 
 program hello
