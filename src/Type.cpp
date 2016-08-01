@@ -22,7 +22,7 @@ type::~type() {}
 std::string string_type::to_string() const { return "string"; }
 std::string number_type::to_string() const { return "number"; }
 std::string bool_type::to_string() const { return "bool"; }
-std::string generic_type::to_string() const { return "generic"; }
+std::string generic_type::to_string() const { return "any"; }
 std::string table_type::to_string() const { return "table"; }
 std::string any_type::to_string() const { return "any"; }
 std::string void_type::to_string() const { return "void"; }
