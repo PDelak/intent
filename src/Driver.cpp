@@ -351,7 +351,9 @@ size_t countGrammarLines(const std::vector<char>& buffer)
 }
 
 // return pair of metamodel (typeset) and model
-std::pair<std::string, std::string> compileDL(const std::string& filename, size_t& grammarSize)
+std::pair<std::string, std::string> compileDL(const std::string& filename, 
+                                              const std::string& modelFile, 
+                                              size_t& grammarSize)
 {
   auto path = std::tr2::sys::current_path().append("\\");
   auto intent_typeset = readFile(path.string().append("intenttypeset.dl"));
@@ -433,6 +435,16 @@ std::pair<std::string, std::string> compileDL(const std::string& filename, size_
   std::string typeset_copy = "{\n#include <iostream>\n}\n";
   typeset_copy += typeset;
 
+  if (!modelFile.empty()) {
+      std::ifstream in(modelFile);
+      if (!in.is_open()) throw FileNotFoundException("FileNotFound");
+      in.unsetf(std::ios::skipws);
+      std::istream_iterator<char> begin(in);
+      std::istream_iterator<char> end;
+      
+      std::copy(begin, end, std::back_inserter(model));      
+  }
+
   return std::make_pair(typeset_copy, model);
 
 }
@@ -491,7 +503,8 @@ bool compileHelper(const std::string& fileName,
                    const std::string& metamodel,
                    const std::string& model,
                    std::unordered_map<std::string, reductionf>& builtinRMappings,
-                   size_t grammarSize)
+                   size_t grammarSize, 
+                   const std::string& option)
 {
   D_ParserTablesReader parser;
 
@@ -512,9 +525,19 @@ bool compileHelper(const std::string& fileName,
   const char* e = model.c_str() + model.size();
   
   bool result = (dparse(p, const_cast<char*>(b), std::distance(b, e)) && !p->syntax_errors);
-  
+  size_t metamodelLineNumber = 0;
+
+  if (option == "-s") {
+      auto b = readFile(fileName);
+      metamodelLineNumber = std::count(b.begin(), b.end(), '\n');
+  }
+
+  size_t lineNum = p->loc.line + grammarSize;
+
+  if (lineNum > metamodelLineNumber) lineNum -= metamodelLineNumber;
+
   std::stringstream ss;
-  ss << p->loc.line + grammarSize;
+  ss << lineNum;
   std::string msg = ss.str();
   msg += " line ";
 
@@ -528,9 +551,10 @@ void addDynamicReductions(const std::string& fileName,
                           const std::string& metamodel, 
                           const std::string& model, 
                           std::unordered_map<std::string, reductionf>& builtinRMappings,
-                          size_t grammarSize)
+                          size_t grammarSize,
+                          const std::string& option)
 {
-  if (compileHelper(fileName, metamodel, model, builtinRMappings, grammarSize)) {
+  if (compileHelper(fileName, metamodel, model, builtinRMappings, grammarSize, option)) {
     auto dynamicReductions = make_dynamic_reductions();
 
     auto matches = matchCases(programPtr);
@@ -548,11 +572,12 @@ std::string visitMatchers(const std::string& fileName,
                           const std::string& metamodel, 
                           const std::string& model, 
                           std::unordered_map<std::string, reductionf>& builtinRMappings,
-                          size_t grammarSize)
+                          size_t grammarSize,
+                          const std::string& option)
 {
   std::string code;
 
-  if (compileHelper(fileName, metamodel, model, builtinRMappings, grammarSize)) {
+  if (compileHelper(fileName, metamodel, model, builtinRMappings, grammarSize, option)) {
     std::ofstream out("matchers.out");
     AST2Code ast2CodeVisitor;
     programPtr->accept(&ast2CodeVisitor);
@@ -566,9 +591,10 @@ void Execute(const std::string& fileName,
              const std::string& metamodel, 
              const std::string& model, 
              std::unordered_map<std::string, reductionf>& builtinRMappings,
-             size_t grammarSize) 
+             size_t grammarSize,
+             const std::string& option) 
 {
-  if (compileHelper(fileName, metamodel, model, builtinRMappings, grammarSize)) 
+  if (compileHelper(fileName, metamodel, model, builtinRMappings, grammarSize, option)) 
   {
     ASTNodeLinker nlinker;
     programPtr->accept(&nlinker);
@@ -628,40 +654,60 @@ auto make_builtin_reductions()
   return reductions;
 }
 
-
+int help()
+{
+    std::cerr << std::endl;
+    std::cerr << "intent.exe" << std::endl;
+    std::cerr << "\tfilename [command]" << std::endl;
+    std::cerr << "\t-s metamodel model" << std::endl;
+    return -1;
+}
 
 int main(int argc, char *argv[]) { 
 
   testFindingReferences();
 
   auto builtinRMappings = make_builtin_reductions();
-
-  if(argc < 2) {
-    std::cerr << "expected input file name" << std::endl;
-    return -1;
-  }
   std::string option;
-  if (argc == 3) {
-    option = argv[2]; 
+  std::string modelFile;
+
+  if (argc < 2 || argc > 4) return help();
+  else if(argc == 4) {
+      option = argv[1];
+      if (option != "-s") return help();
+
+      modelFile = argv[3];
+      compilationUnit = argv[2];
+  } else if(argc == 3) {
+      std::string fileName = argv[1];
+      option = argv[2];
+      compilationUnit = fileName;
   }
-  std::string fileName = argv[1];
-  compilationUnit = fileName;
+  else if (argc == 2) {
+      std::string fileName = argv[1];
+      compilationUnit = fileName;
+  }
+
+
   bool showTree = false;
   bool compileOnly = false;
+  
   if (option.compare("tree") == 0) showTree = true;
   if (option.compare("gen") == 0) compileOnly = true;
+
   try {
     tests();
+
+    size_t grammarSize = 0;
     std::string metamodel;
     std::string model;
-    size_t grammarSize = 0;
-    std::tie(metamodel, model) = compileDL(fileName, grammarSize);
+    std::tie(metamodel, model) = compileDL(compilationUnit, modelFile, grammarSize);
     
     serializeMetamodel(metamodel);
     DParser_pass("tmp.g");
-    addDynamicReductions(fileName, "tmp.g.d_parser.c", model, builtinRMappings, grammarSize);
-    std::string codeGen = visitMatchers(fileName, "tmp.g.d_parser.c", model, builtinRMappings, 0);
-    if(!compileOnly) Execute(fileName, "tmp.g.d_parser.c", codeGen, builtinRMappings, 0);
+    addDynamicReductions(compilationUnit, "tmp.g.d_parser.c", model, builtinRMappings, grammarSize, option);
+    std::string codeGen = visitMatchers(compilationUnit, "tmp.g.d_parser.c", model, builtinRMappings, 0, option);
+    if(!compileOnly) Execute(compilationUnit, "tmp.g.d_parser.c", codeGen, builtinRMappings, 0, option);
   }  
   catch (const FileNotFoundException& fe) { std::cerr << fe.what() << std::endl; }
   catch (const SymbolNotFound& snf) { std::cerr << snf.what() << std::endl; }
