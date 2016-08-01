@@ -48,6 +48,7 @@ grammar intent = [
 
 
   syntax bin_op = '.' property!(binary_op_left, 30)
+              | '..' property!(binary_op_left, 25)
               | '+' property!(binary_op_left, 25)
   	          | '-' property!(binary_op_left, 25)
   	          | '*' property!(binary_op_left, 30)

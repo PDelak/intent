@@ -135,6 +135,7 @@ std::string FunctionExpr::serializeImpl(const ASTNodeDecorator& decorator) {
 std::string FunctionCall::serializeImpl(const ASTNodeDecorator& decorator) {
   D_ParseNode *xpn = d_get_child(m_identifier, 0);
   std::string id = std::string(xpn->start_loc.s , xpn->end);
+  if (id == "print") id = "io.write";
   std::string out;
   out += id;
 
