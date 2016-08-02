@@ -90,12 +90,13 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <AdditionalOptions>
       </AdditionalOptions>
+      <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>debug</AdditionalLibraryDirectories>
-      <AdditionalDependencies>dparser.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -128,6 +129,7 @@
       <AdditionalIncludeDirectories>dparser;D:\libs\Boost\include\boost-1_47;lua;</AdditionalIncludeDirectories>
       <AdditionalOptions>
       </AdditionalOptions>
+      <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -157,8 +159,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="dparser\arg.c" />
+    <ClCompile Include="dparser\gram.c" />
+    <ClCompile Include="dparser\grammar.g.c" />
+    <ClCompile Include="dparser\grammar.g.d_parser.c" />
+    <ClCompile Include="dparser\lex.c" />
+    <ClCompile Include="dparser\lr.c" />
+    <ClCompile Include="dparser\mkdparse.c" />
+    <ClCompile Include="dparser\parse.c" />
+    <ClCompile Include="dparser\read_binary.c" />
+    <ClCompile Include="dparser\scan.c" />
+    <ClCompile Include="dparser\symtab.c" />
+    <ClCompile Include="dparser\util.c" />
+    <ClCompile Include="dparser\version.c" />
+    <ClCompile Include="dparser\write_tables.c" />
     <ClCompile Include="lua\lapi.c" />
-    <ClCompile Include="lua\lauxlib.c" />
+    <ClCompile Include="lua\lauxlib.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsCpp</CompileAs>
+    </ClCompile>
     <ClCompile Include="lua\lbaselib.c" />
     <ClCompile Include="lua\lbitlib.c" />
     <ClCompile Include="lua\lcode.c" />
@@ -211,6 +229,22 @@
     <ClCompile Include="src\Visitor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="dparser\arg.h" />
+    <ClInclude Include="dparser\d.h" />
+    <ClInclude Include="dparser\dparse.h" />
+    <ClInclude Include="dparser\dparse_tables.h" />
+    <ClInclude Include="dparser\dparse_tree.h" />
+    <ClInclude Include="dparser\dsymtab.h" />
+    <ClInclude Include="dparser\gram.h" />
+    <ClInclude Include="dparser\gramgram.h" />
+    <ClInclude Include="dparser\lex.h" />
+    <ClInclude Include="dparser\lr.h" />
+    <ClInclude Include="dparser\mkdparse.h" />
+    <ClInclude Include="dparser\parse.h" />
+    <ClInclude Include="dparser\read_binary.h" />
+    <ClInclude Include="dparser\scan.h" />
+    <ClInclude Include="dparser\util.h" />
+    <ClInclude Include="dparser\write_tables.h" />
     <ClInclude Include="lua\lapi.h" />
     <ClInclude Include="lua\lauxlib.h" />
     <ClInclude Include="lua\lcode.h" />

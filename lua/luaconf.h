@@ -226,7 +226,7 @@
 
 #else				/* }{ */
 
-#define LUA_API		extern
+#define LUA_API		extern "C"
 
 #endif				/* } */
 
