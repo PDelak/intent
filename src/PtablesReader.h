@@ -17,6 +17,10 @@
 #include "Exceptions.h"
 #include "DynamicReductions.h"
 
+#ifdef _WIN32
+#pragma warning( disable : 4996) 
+#endif
+
 template <typename T>
 T lexical_cast(const std::string& str)
 {  

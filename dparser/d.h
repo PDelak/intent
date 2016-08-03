@@ -4,6 +4,13 @@
 #ifndef _d_H_
 #define _d_H_
 
+#ifdef _WIN32
+#pragma warning( disable : 4018) 
+#pragma warning( disable : 4996) 
+#pragma warning( disable : 4244) 
+#pragma warning( disable : 4390) 
+#endif
+
 #ifdef MEMWATCH
 #define MEMWATCH_STDIO 1
 #include "../../src/memwatch-2.67/memwatch.h"
