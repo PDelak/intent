@@ -219,6 +219,9 @@
     <ClCompile Include="dparser\write_tables.c">
       <Filter>dparser</Filter>
     </ClCompile>
+    <ClCompile Include="src\FrontEnd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lua\lapi.h">
@@ -424,6 +427,9 @@
     </ClInclude>
     <ClInclude Include="dparser\write_tables.h">
       <Filter>dparser</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FrontEnd.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

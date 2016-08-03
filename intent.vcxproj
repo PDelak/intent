@@ -216,6 +216,7 @@
     <ClCompile Include="src\Driver.cpp" />
     <ClCompile Include="src\DynamicReductions.cpp" />
     <ClCompile Include="src\Exceptions.cpp" />
+    <ClCompile Include="src\FrontEnd.cpp" />
     <ClCompile Include="src\LuaBacked.cpp" />
     <ClCompile Include="src\MatchReferences.cpp" />
     <ClCompile Include="src\MatchVisitor.cpp" />
@@ -282,6 +283,7 @@
     <ClInclude Include="src\BuiltinReductions.h" />
     <ClInclude Include="src\DynamicReductions.h" />
     <ClInclude Include="src\Exceptions.h" />
+    <ClInclude Include="src\FrontEnd.h" />
     <ClInclude Include="src\Match.h" />
     <ClInclude Include="src\MatchReferences.h" />
     <ClInclude Include="src\MatchVisitor.h" />
