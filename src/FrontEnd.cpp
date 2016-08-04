@@ -121,7 +121,7 @@ namespace Intent {
     }
 
 
-    void DParser_pass(char* path)
+    static void DParser_pass(char* path)
     {
       int set_op_priority_from_rule = 0;
       int right_recursive_BNF = 0;
@@ -193,7 +193,7 @@ namespace Intent {
 
     }
 
-    std::vector<char> readFile(const std::string& file)
+    static std::vector<char> readFile(const std::string& file)
     {
       std::ifstream in(file);
       if (!in.is_open()) throw FileNotFoundException("FileNotFound");
@@ -207,7 +207,7 @@ namespace Intent {
     }
 
 
-    void executeLUA(const std::string& file)
+    static void executeLUA(const std::string& file)
     {
       lua_State *lState;
       lState = luaL_newstate();
@@ -217,7 +217,7 @@ namespace Intent {
     }
 
     // return pair of metamodel (typeset) and model
-    std::pair<std::string, std::string> compileDL(const std::string& filename, 
+    static std::pair<std::string, std::string> compileDL(const std::string& filename, 
                                                   const std::string& modelFile, 
                                                   size_t& grammarSize)
     {
@@ -315,7 +315,7 @@ namespace Intent {
 
     }
 
-    bool compileHelper(const std::string& fileName,
+    static bool compileHelper(const std::string& fileName,
         const std::string& metamodel,
         const std::string& model,
         std::unordered_map<std::string, reductionf>& builtinRMappings,
@@ -363,7 +363,7 @@ namespace Intent {
 
     }
 
-    void Execute(const std::string& fileName,
+    static void Execute(const std::string& fileName,
         const std::string& metamodel,
         const std::string& model,
         std::unordered_map<std::string, reductionf>& builtinRMappings,
@@ -385,7 +385,7 @@ namespace Intent {
         
     }
 
-    std::unordered_map<std::string, reductionf>  make_builtin_reductions()
+    static std::unordered_map<std::string, reductionf>  make_builtin_reductions()
     {
         std::unordered_map<std::string, reductionf> reductions = {
             { "*program_0*", program_reduction },
@@ -430,7 +430,7 @@ namespace Intent {
         return reductions;
     }
 
-    std::unordered_map<std::string, std::string> matchCases(ProgramPtr programPtr)
+    static std::unordered_map<std::string, std::string> matchCases(ProgramPtr programPtr)
     {
         std::unordered_map<std::string, std::string> casesMap;
         MatchVisitor matchVisitor;
@@ -456,7 +456,7 @@ namespace Intent {
     }
 
 
-    void addDynamicReductions(const std::string& fileName,
+    static void addDynamicReductions(const std::string& fileName,
         const std::string& metamodel,
         const std::string& model,
         std::unordered_map<std::string, reductionf>& builtinRMappings,
@@ -478,7 +478,7 @@ namespace Intent {
         
     }
 
-    std::string visitMatchers(const std::string& fileName,
+    static std::string visitMatchers(const std::string& fileName,
         const std::string& metamodel,
         const std::string& model,
         std::unordered_map<std::string, reductionf>& builtinRMappings,
