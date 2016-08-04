@@ -370,19 +370,19 @@ namespace Intent {
         size_t grammarSize,
         const std::string& option)
     {
-        if (compileHelper(fileName, metamodel, model, builtinRMappings, grammarSize, option))
-        {
-            ASTNodeLinker nlinker;
-            programPtr->accept(&nlinker);
+        if (!compileHelper(fileName, metamodel, model, builtinRMappings, grammarSize, option)) return;
+        
+        ASTNodeLinker nlinker;
+        programPtr->accept(&nlinker);
 
-            programPtr->test();
-            if (!programPtr->isTest()) {
-                std::ofstream out(programPtr->intermediateName());
-                programPtr->generate(out);
-            }
-            std::string intermediate_file = "tmp.intent.lua";
-            executeLUA(intermediate_file);
+        programPtr->test();
+        if (!programPtr->isTest()) {
+            std::ofstream out(programPtr->intermediateName());
+            programPtr->generate(out);
         }
+        std::string intermediate_file = "tmp.intent.lua";
+        executeLUA(intermediate_file);
+        
     }
 
     std::unordered_map<std::string, reductionf>  make_builtin_reductions()
@@ -463,18 +463,19 @@ namespace Intent {
         size_t grammarSize,
         const std::string& option)
     {
-        if (compileHelper(fileName, metamodel, model, builtinRMappings, grammarSize, option)) {
-            auto dynamicReductions = make_dynamic_reductions();
+        if (!compileHelper(fileName, metamodel, model, builtinRMappings, grammarSize, option)) return;
 
-            auto matches = matchCases(programPtr);
+        auto dynamicReductions = make_dynamic_reductions();
 
-            size_t index = 0;
-            for (auto matchcase : matches) {
-                IdToMatchCase[index] = std::make_pair(matchcase.first, matchcase.second);
-                builtinRMappings.insert(std::make_pair(matchcase.first, dynamicReductions[index]));
-                index++;
-            }
+        auto matches = matchCases(programPtr);
+
+        size_t index = 0;
+        for (auto matchcase : matches) {
+            IdToMatchCase[index] = std::make_pair(matchcase.first, matchcase.second);
+            builtinRMappings.insert(std::make_pair(matchcase.first, dynamicReductions[index]));
+            index++;
         }
+        
     }
 
     std::string visitMatchers(const std::string& fileName,
@@ -486,14 +487,29 @@ namespace Intent {
     {
         std::string code;
 
-        if (compileHelper(fileName, metamodel, model, builtinRMappings, grammarSize, option)) {
-            std::ofstream out("matchers.out");
-            AST2Code ast2CodeVisitor;
-            programPtr->accept(&ast2CodeVisitor);
-            out << ast2CodeVisitor.serialize() << std::endl;
-            code = ast2CodeVisitor.serialize();
-        }
+        if (!compileHelper(fileName, metamodel, model, builtinRMappings, grammarSize, option)) return code;
+
+        std::ofstream out("matchers.out");
+        AST2Code ast2CodeVisitor;
+        programPtr->accept(&ast2CodeVisitor);
+        out << ast2CodeVisitor.serialize() << std::endl;
+        code = ast2CodeVisitor.serialize();
+        
         return code;
+    }
+
+    void Exec(const std::string& compilationUnit, const std::string& modelFile, const std::string& option, bool compileOnly)
+    {
+        size_t grammarSize = 0;
+        std::string metamodel;
+        std::string model;
+        std::tie(metamodel, model) = compileDL(compilationUnit, modelFile, grammarSize);
+        auto builtinRMappings = make_builtin_reductions();
+
+        DParser_pass("tmp.g");
+        addDynamicReductions(compilationUnit, "tmp.g.d_parser.c", model, builtinRMappings, grammarSize, option);
+        std::string codeGen = visitMatchers(compilationUnit, "tmp.g.d_parser.c", model, builtinRMappings, 0, option);
+        if (!compileOnly) Execute(compilationUnit, "tmp.g.d_parser.c", codeGen, builtinRMappings, 0, option);
     }
 
   }

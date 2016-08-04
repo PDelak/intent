@@ -7,8 +7,6 @@
 
 extern std::string compilationUnit;
 
-using namespace Intent::FrontEnd;
-
 int help()
 {
     std::cerr << std::endl;
@@ -18,46 +16,40 @@ int help()
     return -1;
 }
 
+bool notValidArgNumbers(int argc)
+{
+    return argc < 2 || argc > 4;
+}
+
 int main(int argc, char *argv[]) { 
 
-  auto builtinRMappings = make_builtin_reductions();
+  if (notValidArgNumbers(argc)) return help();
+
   std::string option;
   std::string modelFile;
 
-  if (argc < 2 || argc > 4) return help();
-  else if(argc == 4) {
+  switch (argc)
+  {
+  case 2:
+      compilationUnit = argv[1];
+      break;
+  case 3:
+      option = argv[2];
+      compilationUnit = argv[1];
+      break;
+  case 4:
       option = argv[1];
       if (option != "-s") return help();
-
       modelFile = argv[3];
       compilationUnit = argv[2];
-  } else if(argc == 3) {
-      std::string fileName = argv[1];
-      option = argv[2];
-      compilationUnit = fileName;
+      break;
+
+  default:
+      break;
   }
-  else if (argc == 2) {
-      std::string fileName = argv[1];
-      compilationUnit = fileName;
-  }
-
-
-  bool showTree = false;
-  bool compileOnly = false;
-  
-  if (option.compare("tree") == 0) showTree = true;
-  if (option.compare("gen") == 0) compileOnly = true;
-
-  try {
-    size_t grammarSize = 0;
-    std::string metamodel;
-    std::string model;
-    std::tie(metamodel, model) = compileDL(compilationUnit, modelFile, grammarSize);
     
-    DParser_pass("tmp.g");
-    addDynamicReductions(compilationUnit, "tmp.g.d_parser.c", model, builtinRMappings, grammarSize, option);
-    std::string codeGen = visitMatchers(compilationUnit, "tmp.g.d_parser.c", model, builtinRMappings, 0, option);
-    if(!compileOnly) Execute(compilationUnit, "tmp.g.d_parser.c", codeGen, builtinRMappings, 0, option);
+  try {
+      Intent::FrontEnd::Exec(compilationUnit, modelFile, option, option == "gen");
   }  
   catch (const FileNotFoundException& fe) { std::cerr << fe.what() << std::endl; }
   catch (const SymbolNotFound& snf) { std::cerr << snf.what() << std::endl; }

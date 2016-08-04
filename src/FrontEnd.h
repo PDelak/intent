@@ -81,7 +81,9 @@ namespace Intent {
         std::unordered_map<std::string, reductionf>& builtinRMappings,
         size_t grammarSize,
         const std::string& option);
-
+    
+    void Exec(const std::string& compilationUnit, 
+        const std::string& modelFile, const std::string& option, bool compileOnly);
   }
 }
 
