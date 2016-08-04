@@ -4,11 +4,13 @@
 #ifndef _d_H_
 #define _d_H_
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(_WIN64)
 #pragma warning( disable : 4018) 
 #pragma warning( disable : 4996) 
 #pragma warning( disable : 4244) 
 #pragma warning( disable : 4390) 
+#pragma warning( disable : 4267) 
+#pragma warning( disable : 4334) 
 #endif
 
 #ifdef MEMWATCH

@@ -9,6 +9,10 @@
 #ifndef lua_h
 #define lua_h
 
+#if defined(_WIN32) || defined(_WIN64)
+#pragma warning( disable : 4334) 
+#endif
+
 #include <stdarg.h>
 #include <stddef.h>
 

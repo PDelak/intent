@@ -52,7 +52,7 @@ struct basic_symbol_table
   
   std::pair<std::string, TypePtr> findSymbol(const std::string& symbol, size_t lineno)
   {
-    int local_table_id = symbol_table_id;
+    size_t local_table_id = symbol_table_id;
     while (local_table_id >= 0) {
       symbol_iterator it = symbol_table[local_table_id].begin();
       while (it != symbol_table[local_table_id].end()) {
