@@ -16,14 +16,14 @@ int help()
     return -1;
 }
 
-bool notValidArgNumbers(int argc)
+bool validArgNumbers(int argc)
 {
-    return argc < 2 || argc > 4;
+    return argc >= 2 && argc <= 4;
 }
 
 int main(int argc, char *argv[]) { 
 
-  if (notValidArgNumbers(argc)) return help();
+  if (!validArgNumbers(argc)) return help();
 
   std::string option;
   std::string modelFile;
